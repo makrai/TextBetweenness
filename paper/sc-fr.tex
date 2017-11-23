@@ -67,6 +67,9 @@
 \newcommand{\kb}{\ensuremath{\sim}\ }
 \newcommand{\term}[1]{\embf{#1}}
 
+\newcommand{\degree}{degree} % XXX majd más lesz! :)
+\newcommand{\bness}{bness}   % XXX majd más lesz! :)
+
 \begin{document}
 
 %\pagestyle{myheadings}
@@ -181,6 +184,8 @@ valami újat tudunk mondani a szövegről,
 új módon tudjuk megragadni a szöveg bizonyos jellegzetességeit.
 
 
+\newpage % XXX
+
 \section{Vizsgálandó dolgok XXX :)}
 
 \begin{itemize}
@@ -203,6 +208,15 @@ ugye \embf{kisvilág} a gráfunk?\\
 = minden mindenből elérhető mondjuk 6 lépésben
 [= legrövidebb utak max hossza 6]\\
 \XXXb{Mi a helyzet ezzel?}
+%
+Marci szerint 2 lesz vagy 3. :)
+%
+Eredmény:
+radius = 9; \embf{diameter = 19 (!)} -- a Karinthy-féle 6 helyett
+%
+Def: mi a small-word-ség definíciója? (?) XXX :)
+ld. https://en.wikipedia.org/wiki/Small-world\_network (!)
+= hogy vmi logaritmikus + a clustering coeff ,,nagy''.
 
 \item
 \embf{centralitás?}
@@ -242,6 +256,8 @@ avagy: a legrövidebb utak hány \%-a megy át a csomóponton.\\
 vagy legalábbis vmilyen típusú szavaknak nagyobb/kisebb lesz.
 Pl.\ a névelőnek nem nagy? [Ez már egy bazi jó eredmény lenne sztem!]}
 
+\item \embf{closeness centrality} is van -- de sztem most hagyjuk :)
+
 \end{itemize}
 
 \item 
@@ -255,15 +271,78 @@ Def: $k$-mag = ,,azok a csúcspontok tartoznak ugyanahhoz a $k$-maghoz, amelyek 
 \XXXb{Mit tudunk mondani a $k$-magokról? Hogy találjuk meg őket?}
 
 \item
-\embf{csoportok?}
+\embf{csoportok? (=klikkek?)}
 Asszem annyi, hogy belül sűrűek. Csoportszerkezet? (átfedések...)\\
 \XXXb{Mit tudunk mondani a csoportokról?
 Van a kezünkben csoportkeresési eljárás?
 Pl.\ klikk perkolációs algoritmus? (ami magyar találmány elvben)
 Átfedhetnek!}
 
+\item
+nemcsak \emph{centrality} van, hanem \emph{prestige} is:
+a legfontosabb prestige index: \embf{rank} (Ann McCranie diái)
+
 \end{itemize}
 
+
+\newpage % XXX
+
+\section{Friss ,,betweenness'' jegyzetek XXX}
+
+Kérdés: tényleg arányos-e örökké (annak kell-e lennie),
+a \degree\ és a \bness?\\
+\embf{Mosmá kijött, hogy nem!}\\
+= van olyan, hogy ,,\degree\ sok + \bness\ kevés''
+(= ez mi is lenne ábrával?)\\
+meg hogy ,,\degree\ kevés + \bness\ sok''
+(= ugye ez az, hogy két gombolyag összekötve egy vonallal)\\
+-- vagy legalább az egyik előfordul. :)
+
+\embf{A csúnya ábrát nagyon szeretem,
+az eddig a főfő eredményünk! (!) XXX :)}\\
+\XXXb{Sikerül annotálni?
+Mely szavak vannak vajon az egyes kitüntetett pontokon?}
+
+-----
+
+ - Shahadat Uddin et al.:
+Network Effects on Scientific Collaborations\\
+%
+,,\degree\ sok + \bness\ kevés'' esetről azt mondja hogy: 
+"It could be explained by the fact that some authors have high number of collaborations with many different other authors; however, they do not play a bridging role in the co-authorship network."
+
+- Carlo Morselli:
+Assessing Vulnerable and Strategic Positions in a Criminal Network\\
+% [./morselli_highlow_10.1.1.1027.9852.pdf]
+%
+szép ábra (Figure 1): \degree\ vs \bness 4 variációja! (!) XXX :)
+% Qin Wang is mondja, hogy van ilyen, csak csúnyább az ábrája... :)
+
+\bness: el lehet mondani, amit ezekről szoktak:
+\begin{itemize}
+\item 
+central = ,,Most important actor'' (Ann McCranie diái szerint)
+\item 
+high \bness\ = ,,cutpoint''
+wikipedia: ,,Betweenness centrality is related to a network's connectivity, in so much as high betweenness vertices have the potential to disconnect graphs if removed.''
+Ha kiszedjük a ,,\bness\ sok'' pontokat, akkor szétesik a hálózat.
+Kérdésem: mire esik szét?
+Marci szerint nem érdekes, mert folytonos lesz a szétesés...
+\end{itemize}
+
+-----
+
+infó a dolgokról:
+\code{https://networkx.github.io/documentation/networkx-1.10/reference/algorithms.html}
+
+-----
+
+ezt mondom:
+Az összes mérték azért van, mert nem látjuk a gráfot,
+és ezekkel szeretnénk látni. :)
+
+
+\newpage % XXX
 
 \section{Korábbi jegyzetek XXX}
 
