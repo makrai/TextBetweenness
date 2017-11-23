@@ -27,6 +27,7 @@
 \parskip=6pt          % XXX ezt majd kukázni
 
 \newcommand{\nyil}{$\rightarrow$\ }
+\newcommand{\matnyil}{\ensuremath{\rightarrow}}
 \newcommand{\nnyil}{$\leftrightarrow$\ }
 \newcommand{\vnyil}{$\leftarrow$\ }
 \newcommand{\code}[1]{\texttt{\small #1}}
@@ -134,20 +135,29 @@ Azokat a hálózatokat, ahol a befokszám-eloszlás
 Zipf-eloszlást követ, \emph{skálafüggetlen hálózat}oknak nevezzük
 \cite[703.\ oldal]{kovacs2012magyar}.
 %
-A
-
-Befokszám eloszlása Zipf.
-
-Zipf a szöveg.
-
-Ötlet találjunk egy konstrukciót,
-amiben a befokszám éppen a szöveggyakoriságot adja.
-
+Régóta tudjuk, hogy a szöveg szavainak gyakorisági eloszlása
+Zipf-eloszlást követ \XXX{mi is a jó/sztenderd hivatk itt?}.
+%
+Az a feladat, hogy találjunk egy konstrukciót,
+melynek segítségével a szövegbeli szógyakoriság
+éppen a befokszám lesz egy alkalmasan megalkotott gráfban.
+%
 Így skálafüggetlen hálózatot kapunk.
 
-Az ötlet nagyon egyszerű: ez-és-ez.
-
 % a konstrukció
+Az ötlet nagyon egyszerű:
+menjünk végig a korpuszon és
+minden szó esetén rajzoljunk be egy (1 súlyú) nyilat,
+ami az adott szóból indul ki és őt közvetlenül követő szóhoz vezet.
+%
+Ha egy szópár többedszerre fordul akkor rajzoljunk be még egy nyilat,
+vagy ami ezzel ekvivalens, a nyíl súlyához adjunk hozzá 1-et.
+%
+\Aref{fig:scfr_pelda}.\ ábrán látható hálózatot kapjuk.
+%
+Ez egy olyan gráf, melyben a csomópontok szavak,
+és az $A\matnyil B$ él akkor létezik, ha van $AB$ bigram a korpuszban,
+és az él súlya $AB$ bigram gyakorisága.
 
 \begin{figure}[h]
 \begin{center}
@@ -159,12 +169,16 @@ A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.
 \label{fig:scfr_pelda}}
 \end{figure}
 
-És ez nagyon jó, mert így a sk-f hálózatok (hálózatelmélet)
-összes meglévő eszközét, módszerét, mérőszámát alkalmazni
-tudjuk erre.
+A fenti reprezentáció tehát skálafüggetlen hálózatot eredményez.
+%
+Ez azért nagyon jó, mert a skálafüggetlen hálózatok elméletének
+az elmúlt évek során kidolgozott összes 
+eszközét, módszerét, mérőszámát alkalmazni tudjuk rá.
 
-Bízunk benne, hogy vmi értelmeset fog mondani ez az eszköztár a szövegről,
-hogy vmi értelmes fog kijönni. Lássuk. : )
+% "vmi értelmeset fog mondani"
+Bízunk benne, hogy ezzel az eszköztárral
+valami újat tudunk mondani a szövegről,
+új módon tudjuk megragadni a szöveg bizonyos jellegzetességeit.
 
 
 \section{Vizsgálandó dolgok XXX :)}
@@ -291,7 +305,7 @@ Pl.\ klikk perkolációs algoritmus? (ami magyar találmány elvben)
 
  - vö: Varjú Zoli: "Kisvilágunk a nyelv"
    itt (Ferrer és Solé, 2001) eljárását csinálja,
-   ami  \emph{nem pont az},  amit én írok!
+   ami  \emph{nem pont az}, amit én írok! \XXXb{Ez nagyon kell!}
    \nyil úh esetleg mégis érdekes lehet
       egy MSZNY poszter erejéig megmutatni a gondolatomat! (!) XXX :)
    -- de jó lenne, ha pont az enyémből jönnének olyan szép dolgok,
@@ -331,7 +345,7 @@ Ez nem hat a skálafüggetlenség ellen? Talán nem. (Sztem nem.)
 Legrövidebb utak kiszámolása:
 nem megy ez a régi concgram-es ,,mindent egyszerre, amit épp tudunk''
 ötletem alapján? De sztem megy.
-\embf{ld.\ a külön papírkát, ahol bemutatom! -- azt beírni!! :)}\\
+\embf{ld.\ a külön papírkát, ahol bemutatom! -- azt beírni!! :)}
 
 Bár biztos van rá 100 más (jobb) módszer... :)
 
