@@ -211,7 +211,7 @@ szemben a mi modellünkkel, ahol viszont lényegi elem.
 
 \newpage % XXX
 
-\section{Eredmények XXX}
+\section{Eredmények}
 
 Az elemzéseinkhez a NetworkX python csomagot használtuk
 \cite{hagberg2008exploring}.
@@ -221,7 +221,14 @@ Talán ezekről kéne írni:
 \begin{enumerate}
 
 \item 
-erősen összefüggő -- igen, kivéve a farok
+Első nagyon egyszerű kérdés, hogy erősen összefüggő-e a gráf,
+azaz minden szóból elérhető-e irányított úton az összes többi szó.
+Lényegében erősen összefüggő lesz a gráf,
+esetleg a korpusz elején és végén lévő
+különleges szavakból álló ,,farok'' fordulhat elő,
+ami megbontja az erős összefüggőséget
+(ld.\ \aref{fig:scfr_pelda}.\ ábrán a \emph{nagyobbnál} szót).
+% de hát biztos minden korpusz \emph{A}-val és ponttal végződik. :)
 
 \item A kisvilág szerkezet, amit már  Karinthy is megsejtett 1929-es
   novellájában, meglepőnek tűnhet, de Erdős--Rényi-féle véletlen grafikonokban
