@@ -242,12 +242,23 @@ erősen összefüggő -- igen, kivéve a farok
     biztosítja az, hogy (az első és az ulsó szó kivételével) a be- és a kiélek
     súlyösszege egyeránt megegyezik a szónak a korpuszban (ez esetben az MNSZ
     véletlenül választott 1 illetve 10 ezer mondatában) való gyakoriságával.
+    Az elméletileg garantált tulajdonságot statisztikailag is teszteltük. Az
+    a fokszámeloszlást exponenciális eloszlással hasonlítva 133-as
+    likelyhood-ratiot és $5.91\cdot 10^{-6}$-os szignifikanciaszintet kaptunk.
 
 \item
-  Egy másik gráfmérték is hasznosnak tűnik az együttelőfordulási gráf 
-    elemzésében, a csúcsok különcsége (\emph{eccentricity}) a többi csúcsba
-    vezető legrövidebb út hosszának maximuma. 
-    
+  Egy másik gráfmérték is hasznosnak tűnik az együttelőfordulási gráf
+    elemzésében, a csúcsok különcsége (\emph{eccentricity}), vagyis a többi
+    csúcsba vezető legrövidebb út hosszának maximuma. Míg a többi vizsgálatot
+    tízeter mondatos mintán végeztük, az ebben a pontban említetteket csak ezer
+    mondatoson, mert az összes (rendezett) csúcspárra ki kell hozzá számolni a legrövidebb
+    út hosszát, aminek nagy az időkomplexitása.
+    A \emph{sugár} (a legkisebb excentricitás) nálunk 9, 
+    az \emph{átmérő} (a maximális excentricitás) 19.
+    Szemléletesen \emph{kerületnek} hívják azokat a pontokat, amelyeknek a
+    különcsége megegyezik a sugárral. Esetünkben egy ilyen csúcs van, a sok
+    funkcióban használatos vessző token. 
+%J    Kiszámoltuk a \emph{széleket} (periphery) is, de az nx.diameter (G, stb_d) A _center_ nx.center (G, stb_d) A __ periféria olyan csomópontok halmaza, amelyeknek az átmérője azonos az excentricitással: nx periféria (G, stb_d) 
     eccentricity, radius, diameter, center, periphery...
 \nyil \embf{center} = vessző (!) -- ez tetszik vmiért... :)
 
