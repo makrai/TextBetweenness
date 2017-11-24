@@ -172,7 +172,7 @@ Ez egy olyan gráf, melyben a csomópontok szavak,
 és az $A\matnyil B$ él akkor létezik, ha van $AB$ bigram a korpuszban,
 és az él súlya $AB$ bigram gyakorisága.
 
-\begin{sidewaysfigure}[ht]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=6cm]{scfr_pelda.pdf}
 \end{center}
@@ -180,7 +180,7 @@ Ez egy olyan gráf, melyben a csomópontok szavak,
 ,,a nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál''.
   A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
 \label{fig:scfr_pelda}
-\end{sidewaysfigure}
+\end{figure}
 
 A fenti reprezentáció tehát skálafüggetlen hálózatot eredményez.
 %
@@ -289,13 +289,14 @@ az egyenlőségjel és egy HTML entity ({\tt \&verbar;}).
 % XXX Tudjuk értelmezni valahogy azt a helyet, ahol ő van? -> végsőbe
 
 % sidewaysfigure???
-\begin{figure}[h]
+\begin{sidewaysfigure}[h]
 \begin{center}
-\includegraphics[width=18cm]{current-flow-closeness.png}
+\includegraphics[width=25cm]{current-flow-closeness.png}
+  A szavak eloszlása \emph{closeness centrality} szerint. %}
 \end{center}
-\caption{A szavak eloszlása \emph{closeness centrality} szerint. 
-\label{fig:closeness}}
-\end{figure}
+  %\caption{
+\label{fig:closeness}
+\end{sidewaysfigure}
 
 \subsection{HITS}
  
@@ -324,22 +325,20 @@ lényegében mindenféle típusú elemmel kapcsolódnia tudnak,
 az igék pedig ragaszkodva bővítményeikhez, vonzataikhoz
 mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
 
-\begin{figure}[h]
+\begin{sidewaysfigure}[h]
 \begin{center}
-\includegraphics[width=18cm]{conv-verb-auth.png}
-\end{center}
-\caption{A HITS algoritmus eredménye.
+\includegraphics[width=25cm]{conv-verb-auth.png}
+%\caption{
+  A HITS algoritmus eredménye.
 A nagyobb piros ponttal jelölt kötőszavak balra fent
 (magasabb authority),
 a nagyobb zöld ponttal jelölt igék jobbra lent
 (alacsonyabb authority)
 helyezkednek el
-a fokszám (gyakoriság) -- authority grafikonon.
-bal-fent: kötőszavak, jobb-lent: igék
-,,a nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál''.
-A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.
-\label{fig:hits-auth}}
-\end{figure}
+  a fokszám (gyakoriság) -- authority grafikonon.%}
+\end{center}
+\label{fig:hits-auth}
+\end{sidewaysfigure}
 
 
 \section{Összefoglalás}
