@@ -11,7 +11,7 @@
 
 \usepackage{tikz-dependency}
 \usepackage{qtree} % emmegmi? XXX
-\usepackage{float}
+\usepackage{rotfloat} % \usepackage{float} helyett a sidewaysfigure miatt!
 \restylefloat{figure}
 \usepackage{tikz-qtree}
 
@@ -269,9 +269,9 @@ A kisvilág szerkezet, amit már  Karinthy is megsejtett 1929-es
     Szemléletesen \emph{kerületnek} hívják azokat a pontokat, amelyeknek a
     különcsége megegyezik a sugárral. Esetünkben egy ilyen csúcs van, a sok
     funkcióban használatos vessző token. 
-%J    Kiszámoltuk a \emph{széleket} (periphery) is, de az nx.diameter (G, stb_d) A _center_ nx.center (G, stb_d) A __ periféria olyan csomópontok halmaza, amelyeknek az átmérője azonos az excentricitással: nx periféria (G, stb_d) 
-    eccentricity, radius, diameter, center, periphery...
-\nyil \embf{center} = vessző (!) -- ez tetszik vmiért... :)
+%    Kiszámoltuk a \emph{széleket} (periphery) is, de az nx.diameter (G, stb_d) A _center_ nx.center (G, stb_d) A __ periféria olyan csomópontok halmaza, amelyeknek az átmérője azonos az excentricitással: nx periféria (G, stb_d) 
+%    eccentricity, radius, diameter, center, periphery...
+% -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
 
 % \subsection{...} 
 % \bness\ csúnya az ábra, de nem eléggé
@@ -288,13 +288,11 @@ az egyenlőségjel és egy HTML entity ({\tt \&verbar;}).
 %
 % XXX Tudjuk értelmezni valahogy azt a helyet, ahol ő van? -> végsőbe
 
-% sidewaysfigure???
 \begin{sidewaysfigure}[h]
 \begin{center}
 \includegraphics[width=25cm]{current-flow-closeness.png}
-  2.\ ábra. A szavak eloszlása \emph{closeness centrality} szerint. %}
 \end{center}
-  %\caption{
+  \caption{A szavak eloszlása \emph{closeness centrality} szerint.}
 \label{fig:closeness}
 \end{sidewaysfigure}
 
@@ -328,14 +326,13 @@ mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
 \begin{sidewaysfigure}[h]
 \begin{center}
 \includegraphics[width=25cm]{conv-verb-auth.png}
-%\caption{
-  3.\ ábra. A HITS algoritmus eredménye.
+\caption{A HITS algoritmus eredménye.
 A nagyobb piros ponttal jelölt kötőszavak balra fent
 (magasabb authority),
 a nagyobb zöld ponttal jelölt igék jobbra lent
 (alacsonyabb authority)
 helyezkednek el
-  a fokszám (gyakoriság) -- authority grafikonon.%}
+  a fokszám (gyakoriság) -- authority grafikonon.}
 \end{center}
 \label{fig:hits-auth}
 \end{sidewaysfigure}
