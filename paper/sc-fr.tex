@@ -23,6 +23,13 @@
 % saját cucc
 
 \usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{epstopdf}
+
+
 
 %\usepackage{fullpage} % XXX ezt majd kukázni
 %\parindent=0pt        % XXX ezt majd kukázni
@@ -164,15 +171,15 @@ Ez egy olyan gráf, melyben a csomópontok szavak,
 és az $A\matnyil B$ él akkor létezik, ha van $AB$ bigram a korpuszban,
 és az él súlya $AB$ bigram gyakorisága.
 
-\begin{figure}[h]
+\begin{sidewaysfigure}[ht]
 \begin{center}
 \includegraphics[width=6cm]{scfr_pelda.pdf}
 \end{center}
-\caption{Példamondatom.
+\caption{Példamondat.
 ,,a nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál''.
-A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.
-\label{fig:scfr_pelda}}
-\end{figure}
+  A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
+\label{fig:scfr_pelda}
+\end{sidewaysfigure}
 
 A fenti reprezentáció tehát skálafüggetlen hálózatot eredményez.
 %
