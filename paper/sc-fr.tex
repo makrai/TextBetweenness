@@ -22,9 +22,9 @@
 
 \usepackage{amsmath}
 
-\usepackage{fullpage} % XXX ezt majd kukázni
-\parindent=0pt        % XXX ezt majd kukázni
-\parskip=6pt          % XXX ezt majd kukázni
+%\usepackage{fullpage} % XXX ezt majd kukázni
+%\parindent=0pt        % XXX ezt majd kukázni
+%\parskip=6pt          % XXX ezt majd kukázni
 
 \newcommand{\nyil}{$\rightarrow$\ }
 \newcommand{\matnyil}{\ensuremath{\rightarrow}}
@@ -126,9 +126,9 @@ mit mondanak \XXXk az ilyen módon reprezentált szövegről.
 
 \marci{Ha nem nagy teher, akkor légyszi így írj bele, Marci. :)}
 
-
-\XXX{nyilván jó lenne 2 bevezető mondat a hálózatelméletről.\\
-HIVATK: Barabási-Albert (eredeti cikk), Csermely (közérthető).}
+% nyilván jó lenne 2 bevezető mondat a hálózatelméletről. -- kb oké.
+% HIVATK: Barabási-Albert (eredeti cikk), -- vmit betettem...
+%         Csermely (közérthető). -- sztem majd a végsőbe tegyük bele XXX
 
 \section{Az ötlet}
 % Sztem főként \cite{kovacs2012magyar} alapján...
@@ -175,6 +175,10 @@ A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.
 A fenti reprezentáció tehát skálafüggetlen hálózatot eredményez.
 %
 Ez azért nagyon jó, mert a skálafüggetlen hálózatok elméletének
+\cite{barabasi2009scalefree}
+% XXX egyrészt kamu, mert nem olvastam,
+%     és nem is tudom mennyire jó kiindulópontnak,
+%     másrész jó, mert sok fontos hivatkozás van benne! (+ rövid)
 az elmúlt évek során kidolgozott összes 
 eszközét, módszerét, mérőszámát alkalmazni tudjuk rá.
 
@@ -183,10 +187,32 @@ Bízunk benne, hogy ezzel az eszköztárral
 valami újat tudunk mondani a szövegről,
 új módon tudjuk megragadni a szöveg bizonyos jellegzetességeit.
 
+% - vö: Varjú Zoli: "Kisvilágunk a nyelv"
+%   itt (Ferrer és Solé, 2001) eljárását csinálja,
+%   ami  \emph{nem pont az}, amit én írok! \XXXb{Ez nagyon kell!}
+%   \nyil úh esetleg mégis érdekes lehet
+%      egy MSZNY poszter erejéig megmutatni a gondolatomat! (!) XXX :)
+%   -- de jó lenne, ha pont az enyémből jönnének olyan szép dolgok,
+%      ami a Varjú Zoliéból nem, és pont azért, mert
+%      nem csak a közvetlen rákövetkezést vette! (!) XXX :)
+Fontos megjegyezni, hogy a fenti konstrukció lényegesen eltér
+attól a bevett megközelítéstől,
+mely esetében akkor húzunk be egy (irányítatlan!) élt
+két szó között, ha egy közös trigramban megtalálhatók,
+más szóval, ha az egyik a másiktól (jobbra vagy balra)
+1 vagy 2 szó távolságra van
+\cite{cancho2001thesmall}.
+Ennél a modellnél a szöveg természetes balról jobbra rákövetkezése
+nincs reprezentálva,
+szemben a mi modellünkkel, ahol viszont lényegi elem.
+
 
 \newpage % XXX
 
 \section{Eredmények XXX}
+
+Az elemzéseinkhez a NetworkX python csomagot használtuk
+\cite{hagberg2008exploring}.
 
 Talán ezekről kéne írni:
 
