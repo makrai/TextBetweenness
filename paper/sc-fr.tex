@@ -15,6 +15,8 @@
 \restylefloat{figure}
 \usepackage{tikz-qtree}
 
+\usepackage{rotating}
+
 \usepackage[hungarian]{babel}
 \selectlanguage{hungarian}
 
@@ -235,17 +237,85 @@ eccentricity, radius, diameter, center, periphery...
 \bness\ csúnya az ábra, de nem eléggé
 
 \item 
-\embf{closeness centrality} -- \&verbar; lóg ki \nyil ,,nem szó''\\
-\XXX{Tudjuk értelmezni valahogy azt a helyet, ahol ő van?}
-
-\item 
-\embf{HITS / authorities} =
-bal-fent: kötőszavak, bl-jf átló: főnevek, jobb-lent: igék\\
-\XXX{talán ez eddig a legérdekesebb, amit bele lehet magyarázni...}\\
-\liex{vagy} milyen szépen kilóg -- mert igének címkézzük (véletlenül),
-de a kötőszavak között van! (!) XXX :)
-
+....
 \end{enumerate}
+
+\subsection{closeness centrality}
+
+A \emph{closeness centrality} mérték egy érdekes jelenséget mutat
+(\ref{fig:closeness}.\ ábra).
+%
+A szavak egységes eloszlásban helyezkednek el.
+Az eloszlásból két olyan elem lóg ki, ami ,,nem szó'':
+az egyenlőségjel és egy HTML entity ({\tt \&verbar;}).
+%
+% XXX Tudjuk értelmezni valahogy azt a helyet, ahol ő van? -> végsőbe
+
+% sidewaysfigure???
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=18cm]{current-flow-closeness.png}
+\end{center}
+\caption{A szavak eloszlása \emph{closeness centrality} szerint. 
+\label{fig:closeness}}
+\end{figure}
+
+\subsection{HITS}
+ 
+A HITS (vagy hub/authority) algoritmus bizonyos jelentős csomópontokat
+keres a hálózatban. A \emph{hub}-ok sok mindenkivel állnak kapcsolatban,
+az \emph{authority}-k pedig megbízható hiteles információt
+tudnak adni.
+% XXX miről?
+%
+Ezzel az algoritmussal kaptuk a leginkább szembeötlő eredményünket.
+
+\Aref{fig:hits-auth}.\ ábrán látszik,
+hogy a kötőszavak és az igék jól elkülönülnek:
+a bal lent -- jobb fent átlótól inkább följebb vannak a kötőszavak,
+és ettől az átlótól inkább lejjebb vannak az igék.
+Azaz a kötőszavak tekintélye nagyobb,
+az igéké pedig kisebb mit a szavaké általában.
+% \embf{HITS / authorities} =
+% bal-fent: kötőszavak, jobb-lent: igék\\
+% \XXX{talán ez eddig a legérdekesebb, amit bele lehet magyarázni...}\\
+% \liex{vagy} milyen szépen kilóg -- mert igének címkézzük (véletlenül),
+% de a kötőszavak között van! (!) XXX :)
+%
+Ez összefügghet azzal, hogy a kötőszavak
+lényegében mindenféle típusú elemmel kapcsolódnia tudnak,
+az igék pedig ragaszkodva bővítményeikhez, vonzataikhoz
+mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=18cm]{conv-verb-auth.png}
+\end{center}
+\caption{A HITS algoritmus eredménye.
+A nagyobb piros ponttal jelölt kötőszavak balra fent
+(magasabb authority),
+a nagyobb zöld ponttal jelölt igék jobbra lent
+(alacsonyabb authority)
+helyezkednek el
+a fokszám (gyakoriság) -- authority grafikonon.
+bal-fent: kötőszavak, jobb-lent: igék
+,,a nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál''.
+A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.
+\label{fig:hits-auth}}
+\end{figure}
+
+
+\section{Összefoglalás}
+
+Az irányított skálafüggetlen hálózattá alakított szöveget
+érintő első vizsgálatainkban feltérképeztük,
+hogy az egyes hálózatelméleti eszközök
+mit mondanak erről a hálózatról, milyen értékek a jellemzőek.
+%
+Legérdekesebb eredményünk az,
+hogy úgy tűnik, hogy a HITS algoritmus
+képes egymástól elválasztani bizonyos szócsoportokat,
+és ezek a csoportok összefüggésben vannak a szófajokkal.
 
 
 \newpage % XXX
