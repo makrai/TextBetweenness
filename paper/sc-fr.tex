@@ -221,14 +221,32 @@ Talán ezekről kéne írni:
 \item 
 erősen összefüggő -- igen, kivéve a farok
 
+\item A kisvilág szerkezet, amit már  Karinthy is megsejtett 1929-es
+  novellájában, meglepőnek tűnhet, de Erdős--Rényi-féle véletlen grafikonokban
+    is előfordul. Ha a élek beválasztását kontrolláló $p$ elég nagy ahhoz, hogy
+    az egész hálózat összekapcsolódjon, akkor az $L$ átlagos távolság csak
+    logaritmikusan növekszik (Erdős \& Réyni, 1960). A kisvilág-szerkezet
+    jellemzésében az alacsony $C$ klaszterezési együtthatót is meg szokták
+    követelni (Watts és Strogatz 1998) de ennek az irányított gráfokra való
+    általánosítása nem tűnik triviálisnak, azért itt a legrövidebb utak
+    hosszából számított statisztikákra szorítkozunk. Ez a mi gráfunkban
+    maximálisan 9, ami több, mint a közösségi hálókra Karinthy által helyesen
+    megsejtett 6, de megítélésünk szerint még kis világnak tekinthető.
+    
 \item 
-kisvilág -- hát nem annyira nagyon... (diameter = 9)
-
-\item 
-\degree\ Zipf -- ez trivi ellenőrzés
+  A sklálafüggetlen gráfok definiáló tulajdonsága, hogy a fokszámok
+    hatványeloszlást követnek (Barabási és Albert 1999). Ezt nálunk Zipf
+    törvénye miatt 
+    biztosítja az, hogy (az első és az ulsó szó kivételével) a be- és a kiélek
+    súlyösszege egyeránt megegyezik a szónak a korpuszban (ez esetben az MNSZ
+    véletlenül választott 1 illetve 10 ezer mondatában) való gyakoriságával.
 
 \item
-eccentricity, radius, diameter, center, periphery...
+  Egy másik gráfmérték is hasznosnak tűnik az együttelőfordulási gráf 
+    elemzésében, a csúcsok különcsége (\emph{eccentricity}) a többi csúcsba
+    vezető legrövidebb út hosszának maximuma. 
+    
+    eccentricity, radius, diameter, center, periphery...
 \nyil \embf{center} = vessző (!) -- ez tetszik vmiért... :)
 
 \item 
