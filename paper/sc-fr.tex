@@ -120,7 +120,7 @@ Zipf-eloszlást követnek, \emph{skálafüggetlen hálózat}oknak nevezzük
 \cite{barabasi1999emergence}
 \cite[703.\ oldal]{kovacs2012magyar}.
 %
-Régóta tudjuk, \cite{Zipf:1935} hogy a szöveg szavainak gyakorisági eloszlása
+Régóta tudjuk \cite{Zipf:1935}, hogy a szöveg szavainak gyakorisági eloszlása
 Zipf-eloszlású.
 % mi is a jó/sztenderd hivatk itt? done
 %
@@ -235,7 +235,7 @@ skálafüggetlen gráfokat a HITS segítségével \cite{zhang2007expertise}.
 
 \subsection{HITS}
 
-A HITS (Hyperlink-indukált témakeresés, \emph{Hyperlink-Induced Topic Search}
+A HITS (Hyperlinkindukált témakeresés, \emph{Hyperlink-Induced Topic Search}
 vagy hubok és tekintélyek, \emph{hubs and authorities}) egy linkelemzési
 algoritmus \cite{Kleinberg:1999},
 körülbelül egyidős a PageRankkel \cite{page1999pagerank}, csak persze sokkal
@@ -296,16 +296,16 @@ című novellájá}t:
 \end{quote}
 
 A meglepően kis távolság, melyet úgy formalizálhatunk, hogy az $L$ átlagos
-távolság csak logaritmikusan növekszik a csúcsok számában , nem a
+távolság csak logaritmikusan növekszik a csúcsok számában, nem a
 skálafüggetlen gráfok sajátja: Erdős--Rényi-féle véletlen gráfoknál is fennáll
 \cite{erdos1960evolution}, ha a élek beválasztását kontrolláló $p$ elég nagy
 ahhoz, hogy az egész hálózat összekapcsolódjon. (Vegyük észre a definícióban,
 hogy önmagában egy gráf kisvilág tulajdonságáról nem beszélhetünk, csak egy
-gráfcsalád esetében.) A kisvilág-szerkezet jellemzésében az alacsony $C$
+olyan gráfsorozat esetében, ahol a csúcsszám végtelenhez tart.) A kisvilág-szerkezet jellemzésében az alacsony $C$
 klaszterezési együtthatót is meg szokták követelni \cite{watts1998collective},
 de ennek az irányított gráfokra való általánosítása nem tűnik triviálisnak,
 ezért tanumányunkban  a legrövidebb utak hosszából számított statisztikákra
-szorítkozunk.  A mi 6828-csúcsú, 12952-élű gráfunkban az átlagos távolság
+szorítkozunk.  A mi 7 K-csúcsú, 13 K-élű gráfunkban az átlagos távolság
 $L=4.89$. Az aszimptotikus tulajdonságot a poszteren elemezzük, amit a projekt
 repójában talál meg az olvasó.
 % maximálisan 19, ami lényegesen több, mint a közösségi hálókra Karinthy által
@@ -412,17 +412,15 @@ hiszen az azonos gyakoriságú igék és kötőszavak is jól elválnak egymást
 Az eredményre a következő intuitív magyarázatot javasoljuk: a kötőszavak nagy
 tekintélye azt jelzi, hogy az őket megelőző tokenek együttes hubértéke nagy.
 Mivel a szavak hubértéke az őket követő szavak tekintélyének összege, az ördögi
-körből úgy léphetünk ki, ha a kötőszavak előtti tokenek után már tekintélyes
+körből úgy léphetünk ki, ha a kötőszavak előtti tokenek után más tekintélyes
 szavak is megjelennek. A gráf tehát tükrözi azt, hogy a kötőszavak olyan helyen
-állnak, ahol sok más szó is állhat. A tipikus példa erre a helyre a már a
-center kapcsán is említett vessző token utáni pozíció.
+állnak, ahol a balkontextus alapján sok más szó is állhat. A tipikus példa
+ilyen balkontextusra a már a center kapcsán is említett vessző token.
 % az igék pedig -- ragaszkodva bővítményeikhez, vonzataikhoz --
 % mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
-Az igék esetében épp ellenkező a helyzet: az igék előtti megjelenő szavak (igemódosítók és
-bővitményi frázisok utolsó szava)
-jobban determinálja, hogy igének kell következnie, mint más szavak
-balkontextusa az adott szót.
-kontextusa az igék előtti pozíció megelőző: az ige előtti szavak  kevesebb félék.
+Az igék esetében épp ellenkező a helyzet: az igék előtt megjelenő szavak
+(igemódosítók és bővitményi frázisok utolsó szavai) jobban determinálják, hogy
+igének kell következnie, mint más szavak balkontextusa az adott szót.
 
 \begin{sidewaysfigure}[h]
 \begin{center}
@@ -671,14 +669,9 @@ ezt mondom:
 Az összes mérték azért van, mert nem látjuk a gráfot,
 és ezekkel szeretnénk látni. :)
 
-
-
-
 %\end{comment}
 
 % --------------------------------------------------------------------------
-
-
 
 \end{document}
 
