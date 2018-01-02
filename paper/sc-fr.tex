@@ -5,7 +5,7 @@
 
 % Ezek egyikének bekapcsolásával a magyar ékezetes karakterek
 % közvetlenül is felhasználhatók:
-%\usepackage[latin2]{inputenc} 
+%\usepackage[latin2]{inputenc}
 \usepackage[utf8]{inputenc}
 %\usepackage{t1enc}
 
@@ -33,8 +33,7 @@
 \usepackage{lscape}
 \usepackage{rotating}
 \usepackage{epstopdf}
-
-
+\usepackage{hyperref}
 
 %\usepackage{fullpage} % XXX ezt majd kukázni
 %\parindent=0pt        % XXX ezt majd kukázni
@@ -50,7 +49,7 @@
 \newcommand{\bd}[1]{\textbf{#1}}
 \newcommand{\cc}[1]{\multicolumn{1}{c}{#1}}
 
-\newcommand{\path}[1]{\code{#1}}
+\renewcommand{\path}[1]{\code{#1}}
 \DeclareMathOperator{\distop}{dist}
 \newcommand{\dist}[2]{\ensuremath{\distop(\path{#1},\path{#2})}}
 %{\sc dist}(\path{#1},\path{#2})}
@@ -111,12 +110,369 @@ mit mondanak az ilyen módon reprezentált szövegről.
 
 % --------------------------------------------------------------------------
 
- 
-% XXX XXX XXX
+\section{Bevezetés}
+\label{sec:otlet}
+% Sztem főként \cite{kovacs2012magyar} alapján...
+
+% Def: sk-f h
+Azokat a hálózatokat, ahol a befokszámok
+Zipf-eloszlást követnek, \emph{skálafüggetlen hálózat}oknak nevezzük
+\cite{barabasi1999emergence}
+\cite[703.\ oldal]{kovacs2012magyar}.
+%
+Régóta tudjuk, \cite{Zipf:1935} hogy a szöveg szavainak gyakorisági eloszlása
+Zipf-eloszlású.
+% mi is a jó/sztenderd hivatk itt? done
+%
+Tanulmányunkban azt az élsúlyozott irányított gráfot vizsgáljuk, melynek
+csúcsai a szóalakok, a $\langle w_1, w_2\rangle$ él súlya pedig a $w_1w_2$
+bigram gyakorisága. Az előbbiek miatt ez a gráf skálafüggetlen.
+
+Ebben a bevezető szakaszban
+egy játékpéldán szemléltetjük a konstrukciót,
+majd bemutatjuk a kapcsolódó irodalmat
+és a HITS linkelemzési algoritmust,
+amivel a leglátványosabb eredményeket kaptuk.
+A következő szakaszban mutatjuk be a kísérleti eredményeket.
+
+\subsection{Gráf bigramokból}
+\label{sec:graph}
+
+Az a feladat, hogy találjunk egy konstrukciót,
+melynek segítségével a szövegbeli szógyakoriság
+éppen a befokszám lesz egy alkalmasan megalkotott gráfban.
+%
+Így skálafüggetlen hálózatot kapunk.
+
+% a konstrukció
+Az ötlet nagyon egyszerű:
+a hálózat csomópontjai a korpusz szavai lesznek,
+menjünk végig a korpuszon és
+minden szó esetén rajzoljunk be egy (1 súlyú) nyilat a hálózatba,
+ami az adott szóból indul ki és őt közvetlenül követő szóhoz vezet.
+%
+Ha egy szópár többedszerre fordul akkor rajzoljunk be még egy nyilat,
+vagy ami ezzel ekvivalens, a nyíl súlyához adjunk hozzá 1-et.
+%
+\Aref{fig:scfr_pelda}.\ ábrán látható hálózatot kapjuk.
+%
+Ez egy olyan gráf lesz, melyben a csomópontok szavak,
+és az $A\matnyil B$ él akkor létezik, ha van $AB$ bigram a korpuszban,
+és az él súlya $AB$ bigram gyakorisága.
+
+\begin{figure}[ht]
+\begin{center}
+\includegraphics[width=6cm]{scfr_pelda.pdf}
+\end{center}
+\caption{,,A nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál.''
+példamondat ábrázolása.
+A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
+\label{fig:scfr_pelda}
+\end{figure}
+
+A fenti reprezentáció tehát skálafüggetlen hálózatot eredményez.
+%
+Ez azért nagyon jó, mert a skálafüggetlen hálózatok elméletének
+% XXX egyrészt kamu, mert nem olvastam,
+%     és nem is tudom mennyire jó kiindulópontnak,
+%     másrész jó, mert sok fontos hivatkozás van benne! (+ rövid)
+az elmúlt évek során kidolgozott összes
+eszközét, módszerét, mérőszámát
+\cite{barabasi2009scalefree}
+% Marci: pár szóval hátrébb raktam a hivatkozást, mert ez a hivatkozás így, az
+% "elmúlt évek" ürügyén kontrasztban van barabasi1999emergence-szel
+alkalmazni tudjuk rá.
+
+% "vmi értelmeset fog mondani"
+Bízunk benne, hogy ezzel az eszköztárral
+valami újat tudunk mondani a szövegről,
+új módon tudjuk megragadni a szöveg bizonyos jellegzetességeit.
+
+\subsection{Kapcsolódó irodalom}
+
+% - vö: Varjú Zoli: "Kisvilágunk a nyelv"
+%   itt (Ferrer és Solé, 2001) eljárását csinálja,
+%   ami  \emph{nem pont az}, amit én írok! \XXXb{Ez nagyon kell!}
+%   \nyil úh esetleg mégis érdekes lehet
+%      egy MSZNY poszter erejéig megmutatni a gondolatomat! (!) XXX :)
+%   -- de jó lenne, ha pont az enyémből jönnének olyan szép dolgok,
+%      ami a Varjú Zoliéból nem, és pont azért, mert
+%      nem csak a közvetlen rákövetkezést vette! (!) XXX :)
+
+A mienkhez leghasonlóbb kutatás alighanem a TextRank \cite{mihalcea2004textrank}.
+Mihalcea és Tarau az irányított, 2-széles ablakkal végzett kutatásaikról azt
+írják, hogy rosszabb eredményeket hoztak, mint a az irányítatlan eset. Azt a
+meglepő következtetést vonják le, hogy a szövegnek nincs természetes iránya.
+Ha nyelvi adatból készült skálafüggetlen gráfról beszélünk, nem kerülhető meg
+\cite{steyvers2005large} sem, ők azonban szemantikus hálókat vizsgálnak, míg mi
+magából a korpuszból vonunk le első sorban szintaktikai tanulságokat.
+
+% Fontos megjegyezni, hogy a fenti
+A mi konstrukciónk lényegesen eltér attól a bevett megközelítéstől,
+mely esetében akkor húzunk be egy (irányítatlan!) élt
+két szó között, ha egy közös trigramban megtalálhatók,
+más szóval, ha az egyik a másiktól (jobbra vagy balra)
+1 vagy 2 szó távolságra van
+\cite{cancho2001thesmall}.
+Ennél a modellnél a szöveg természetes balról jobbra rákövetkezése
+nincs reprezentálva,
+szemben a mi modellünkkel, ahol viszont lényegi elem.
+%
+% XXX vö: szemantika vs. szintaxis!
+Emiatt a most bemutatott modell várhatóan kevésbé szemantikai,
+inkább szintaktikai jellemzőket tud majd megragadni.
+%
+% reviewer:
+% "Milyen alkalmazásait tervezi a szerző a javasolt hálózatnak?"
+% - mittomén, majd meglátjuk, alapkutatás! :)
+A kutatás feltáró alapkutatás jellegéből adódóan
+az eredmények esetleges majdani alkalmazása nem témája jelen cikknek.
+
+A következő alszakaszban bemutatandó HITS algoritmus, amivel a leglátványosabb
+eredményeket kaptuk.  nagyjából egyidős a skálafüggetlen gráfok ma népszerű
+fogalmával.  Az utóbbi évtizedekben természetesen számos kutatás vizsgált
+skálafüggetlen gráfokat a HITS segítségével \cite{zhang2007expertise}.
+
+\subsection{HITS}
+
+A HITS (Hyperlink-indukált témakeresés, \emph{Hyperlink-Induced Topic Search}
+vagy hubok és tekintélyek, \emph{hubs and authorities}) egy linkelemzési
+algoritmus \cite{Kleinberg:1999},
+körülbelül egyidős a PageRankkel \cite{page1999pagerank}, csak persze sokkal
+kevésbé elterjedt.
+Az az alapötlete, hogy a fontos internetes oldalak kétfélék.  A \emph{hubok},
+mint az \href{https://index.hu/}{index.hu} vagy a
+\href{https://vajdasag.lap.hu/}{vajdasag.lap.hu}, nagy linkgyűjteményként
+működnek: a rajtuk magukon megjelenő információnak nincs tekintélye, viszont
+más, hiteles oldalakra, a \emph{tekintélyekre} irányítják a felhasználókat. A
+hubok és a tekintélyek definíciója kölcsönös: jó hub egy olyan oldal, amely sok
+tekintélyes oldalra mutat, nagy tekintélyük pedig azoknak az oldalaknak van
+ebben a modellben, melyekre számos jó hub mutat.
+
+A hub- és tekintélyérték számítása iteríatíve történik.  Kezdetben a számokat
+tetszés szerint választjuk (például minden oldalnak ugyanazt), majd minden
+iterációban egy oldal mértékadósága a rá mutató oldalak hubértékének összege
+lesz, a hubérték pedig a lap által mutatott oldalak tekintélyének összege.  Az
+iterációk között a hub- illetve tekintélyértékek négyzetösszegét normalizáljuk.
+% bizonyos jelentős csomópontokat keres a hálózatban. A \emph{hub}-ok sok
+% mindenkivel állnak kapcsolatban, az \emph{authority}-k pedig megbízható
+% hiteles információt tudnak adni.  % XXX miről?
+Ezzel az algoritmussal kaptuk a leginkább szembeötlő eredményünket.
+
+\section{Eredmények}
+\label{sec:results}
+
+Vizsgálatainkat\footnote{\url{https://github.com/makrai/TextBetweenness.git}}
+az MNSZ2 \cite{oravecz2014hungarian} véletlenül választott 1000 illetve 10000
+mondatán végeztük.
+%
+Az elemzéseinkhez a NetworkX python csomagot használtuk
+\cite{hagberg2008exploring}.
+
+
+
+\subsection{Erős összefüggőség}
+Az első nagyon egyszerű kérdés, hogy erősen összefüggő-e a gráf,
+azaz minden szóból elérhető-e irányított úton az összes többi szó.
+Lényegében erősen összefüggő lesz a gráf,
+esetleg a korpusz elején és végén lévő
+hapax szavakból álló ,,farok'' fordulhat elő,
+ami megbontja az erős összefüggőséget
+(ld.\ \aref{fig:scfr_pelda}.\ ábrán a \emph{nagyobbnál} szót).
+% de hát biztos minden korpusz \emph{A}-val és ponttal végződik. :)
+
+\subsection{Kisvilág tulajdonság}
+
+A kisvilág-szerkezet szemléltetésére idézzük Karinthy 1929-es
+\href{http://www.irodalmijelen.hu/05242013-1547/karinthy-frigyes-lancszemek}{\emph{Láncszemek}
+című novellájá}t:
+
+\begin{quote}
+  Tessék egy akármilyen meghatározható egyént kijelölni a Föld másfél milliárd
+  lakója közül, bármelyik pontján a Földnek – [a társaság egyik tagja fogadást
+  ajánlott], hogy legföljebb öt más egyénen keresztül, kik közül az egyik neki
+  személyes ismerőse, kapcsolatot tud létesíteni az illetővel, csupa közvetlen
+  – ismeretség – alapon
+\end{quote}
+
+A meglepően kis távolság, melyet úgy formalizálhatunk, hogy az $L$ átlagos
+távolság csak logaritmikusan növekszik a csúcsok számában , nem a
+skálafüggetlen gráfok sajátja: Erdős--Rényi-féle véletlen gráfoknál is fennáll
+\cite{erdos1960evolution}, ha a élek beválasztását kontrolláló $p$ elég nagy
+ahhoz, hogy az egész hálózat összekapcsolódjon. (Vegyük észre a definícióban,
+hogy önmagában egy gráf kisvilág tulajdonságáról nem beszélhetünk, csak egy
+gráfcsalád esetében.) A kisvilág-szerkezet jellemzésében az alacsony $C$
+klaszterezési együtthatót is meg szokták követelni \cite{watts1998collective},
+de ennek az irányított gráfokra való általánosítása nem tűnik triviálisnak,
+ezért tanumányunkban  a legrövidebb utak hosszából számított statisztikákra
+szorítkozunk.  A mi 6828-csúcsú, 12952-élű gráfunkban az átlagos távolság
+$L=4.89$. Az aszimptotikus tulajdonságot a poszteren elemezzük, amit a projekt
+repójában talál meg az olvasó.
+% maximálisan 19, ami lényegesen több, mint a közösségi hálókra Karinthy által
+% helyesen megsejtett 6, de ez a hálózat irányítottságának köszönhető, írta
+% Bálint, de Marci nem ért egyet, mert a közösségi gráfok is irányítottak.
+
+\subsection{Skálafüggetlenség}
+
+A skálafüggetlen gráfok definiáló tulajdonsága, hogy a fokszámok
+hatványeloszlást követnek \cite{barabasi1999emergence}. Ezt nálunk Zipf
+törvénye miatt biztosítja az, hogy (az első és az utolsó szó kivételével) a be-
+és a kiélek súlyösszege egyaránt megegyezik a szónak a korpuszban való
+gyakoriságával.  Az elméletileg garantált tulajdonságot statisztikailag is
+ellenőriztük.  A fokszámeloszlást exponenciális eloszlással összehasonlítva
+133-as likelyhood-ratiót és $5.91\cdot 10^{-6}$-os szignifikanciaszintet
+kaptunk. A Zipf-együttható 2.20-nak adódott, ami összhangban van azzal, hogy az
+angolban 1.25 körülre teszik \cite{Kornai:2008}, a magyar pedig gazdagabb
+morfológiájú, így a Zipf-együttható is magasabbnak várható.
+
+\subsection{Távolságok}
+  Egy másik gráfmérték is hasznosnak tűnik az együtt-előfordulási gráf
+    elemzésében, a csúcsok különcsége (\emph{eccentricity}), vagyis
+    az adott csúcsból az összes többi
+    csúcsba vezető legrövidebb utak hosszának maximuma.
+    Míg a többi vizsgálatot
+    tízezer mondatos mintán végeztük, az ebben a pontban említetteket csak ezer
+    mondatoson, mert az összes (rendezett) csúcspárra ki kell hozzá számolni a legrövidebb
+    út hosszát, aminek nagy az időkomplexitása.
+    A \emph{sugár} (a legkisebb különcség) nálunk 9,
+    az \emph{átmérő} (a maximális különcség) 19.
+    Szemléletesen \emph{közép}nek \emph{(center)}
+    % külterület}nek? szélnek? \emph{(periphery)}
+    hívják azokat a pontokat, amelyeknek a különcsége megegyezik a sugárral.
+    %z átmérővel.
+    Esetünkben egy ilyen csúcs van, a sok funkcióban használatos vessző (,) token.
+    % Kiszámoltuk a periphery-t is: ['Megadható', 'two']
+    % -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
+
+% \subsection{...}  TODO
+% \bness\ csúnya az ábra, de nem eléggé
+% XXX XXX végsőbe
+
+\subsection{Closeness centrality}
+
+A közelségi központiság (\emph{closeness centrality}) mértéke (mely
+az adott csomóponttól az összes többi csomópontba vezető
+legrövidebb utak hosszának átlagaként adódik)
+% XXX wikipedia alapján...
+% XXX és akkor nagy a clo-centr, ha ez az érték kicsi????
+egy érdekes jelenséget mutat
+(2.~ábra).  %\ref{fig:closeness}
+%
+A szavak egységes eloszlásban helyezkednek el.
+Az eloszlásból néhány olyan elem lóg ki, amely
+,,nem illeszkedik a magyar szövegbe'':
+ilyen az egyenlőségjel és egy HTML entity ({\tt \&verbar;}),
+illetve két angol szó (a \liex{the} és az \liex{of}),
+melyek előfordulnak a korpuszban.
+%
+% Ez egy fokszám vs closeness_centrality grafikon, ugye?
+Ezeknek a tokeneknek tehát kisebb
+a közelségi központiság értékük annál,
+mint amit gyakoriságuk alapján várnánk.
+%
+A kilógó elemek pontos karakterizálásához további vizsgálat szükséges.
+%
+% XXX Tudjuk értelmezni valahogy azt a helyet, ahol ő van? -> végsőbe
+
+\begin{sidewaysfigure}[h]
+\begin{center}
+\includegraphics[width=25cm]{current-flow-closeness.png}
+\caption{A szavak eloszlása \emph{closeness centrality} szerint.}
+\end{center}
+\label{fig:closeness}
+\end{sidewaysfigure}
+
+\subsection{HITS}
+
+A bigramgyakorliságokból épített gráfban egy szó hubértéke az őt követő szavak
+tekintélyének összege, egy szó tekintélyét pedig az őt megelőző szavak együttes
+hubértéke adja.
+%\Aref{fig:hits-auth}.\
+A 3.~ábrán első körben azt látjuk, hogy a gyakoribb (nagyobb fokszámú)
+szavaknak nagyobb a tekintélye -- ez nem meglepő. Érdekesebb, hogy a kötőszavak
+és az igék jól elkülönülnek:
+az egész szókincsre jellemző bal lent -- jobb fent átlótól inkább följebb vannak a kötőszavak,
+és ettől az átlótól inkább lejjebb vannak az igék.
+Azaz a kötőszavak tekintélye nagyobb annál, ami a gyakoriságuk alapján várható,
+az igéké pedig kisebb.
+% mit a szavaké általában.
+% \embf{HITS / authorities} =
+% bal-fent: kötőszavak, jobb-lent: igék\\
+% \XXX{talán ez eddig a legérdekesebb, amit bele lehet magyarázni...}\\
+% \liex{vagy} milyen szépen kilóg -- mert igének címkézzük (véletlenül),
+% de a kötőszavak között van! (!) XXX :)
+%
+% reviewer kedvéért:
+(Tehát nem egyszerűen arról van szó,
+hogy a kötőszavak gyakorisága kiemelkedően magas,
+hiszen az azonos gyakoriságú igék és kötőszavak is jól elválnak egymástól.)
+
+% Az eredmény összefügghet azzal, hogy a kötőszavak
+% lényegében mindenféle típusú elemmel kapcsolódni tudnak,
+Az eredményre a következő intuitív magyarázatot javasoljuk: a kötőszavak nagy
+tekintélye azt jelzi, hogy az őket megelőző tokenek együttes hubértéke nagy.
+Mivel a szavak hubértéke az őket követő szavak tekintélyének összege, az ördögi
+körből úgy léphetünk ki, ha a kötőszavak előtti tokenek után már tekintélyes
+szavak is megjelennek. A gráf tehát tükrözi azt, hogy a kötőszavak olyan helyen
+állnak, ahol sok más szó is állhat. A tipikus példa erre a helyre a már a
+center kapcsán is említett vessző token utáni pozíció.
+% az igék pedig -- ragaszkodva bővítményeikhez, vonzataikhoz --
+% mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
+Az igék esetében épp ellenkező a helyzet: az igék előtti megjelenő szavak (igemódosítók és
+bővitményi frázisok utolsó szava)
+jobban determinálja, hogy igének kell következnie, mint más szavak
+balkontextusa az adott szót.
+kontextusa az igék előtti pozíció megelőző: az ige előtti szavak  kevesebb félék.
+
+\begin{sidewaysfigure}[h]
+\begin{center}
+\includegraphics[width=25cm]{conv-verb-auth.png}
+\caption{A HITS algoritmus eredménye.
+A nagyobb piros ponttal jelölt kötőszavak balra fent
+(magasabb authority),
+a nagyobb zöld ponttal jelölt igék jobbra lent
+(alacsonyabb authority)
+helyezkednek el
+a fokszám (gyakoriság) vs authority grafikonon.}
+\end{center}
+\label{fig:hits-auth}
+\end{sidewaysfigure}
+
+
+\section{Összefoglalás}
+
+Az irányított skálafüggetlen hálózattá alakított szöveget
+érintő első vizsgálatainkban feltérképeztük,
+hogy az egyes hálózatelméleti eszközök
+mit mondanak erről a hálózatról, milyen értékek a jellemzőek.
+%
+Legérdekesebb kezdeti eredményünk az,
+hogy úgy tűnik, hogy a HITS algoritmus
+képes egymástól elválasztani bizonyos szócsoportokat,
+és ezek a csoportok összefüggésben vannak a szófajokkal.
+
+
+
+\section*{Köszönetnyilvánítás}
+\label{Koszonet}
+
+Sass Bálint kutatásait
+az MTA Bolyai János Kutatási Ösztöndíja támogatta
+(ügyszám: BO/00064/17/1; időtartam: 2017-2020).
+
+
+% ---- Bibliography ----
+%
+%kulon bibtex fajl hasznalata
+\bibliographystyle{splncs}
+\bibliography{minden.bib}
+
+\end{document}
+%\begin{comment}
 % Marci: "Nem annyira zavarja, hogy egyedül csinálja,
 %         de hát igen, a cikket meg kéne írni!"
 % Marci: "Van olyan eset, hogy poszterre nem fogadják el?" :)
-% 
+%
 %   + cikk-kezdeményt csinálni -- megvan! :)
 %
 %   - cikk-kezdeménybe: az ötlet (pár hivatkozással!)
@@ -158,11 +514,11 @@ mit mondanak az ilyen módon reprezentált szövegről.
 "hiányzik az előzmények, az alternatív megoldások bemutatása"
   -- fogalmunk sincs... :)
 
-\item[+] 
+\item[+]
 "hiányzik az eredmények komparatív kiértékelése"
   -- há mer új az ötlet! :)
 
-\item 
+\item
 "hiányzik azoknak a fogalmaknak a magyarázata,
 amelyeket a cikkben minimális definiálás után használnak (pl. különcség )."
   - \embf{Marci, ez jó lenne!}
@@ -171,7 +527,7 @@ amelyeket a cikkben minimális definiálás után használnak (pl. különcség 
 "igen rövid az összefoglalás"
   -- hm.. :)
 
-\item 
+\item
 "igen rövid az irodalomjegyzék"
   - \embf{Marci tedd bele légyszi a hivatkozásaidat
 (3 db) az irodalomjegyzékbe :)}
@@ -207,7 +563,7 @@ esetén rajzoljunk be egy (1 súlyú) nyilat.'),"
 "elfogadás esetén a szövegezés erős javítása szükséges."
   - esetleg lehetne tenni vmit ezzel... \embf{Esetleg... Hm? :)}
 
-\item[+] 
+\item[+]
 "A 2. fejezetben közölt számok mekkora és milyen korpuszból épített hálózat
 jellemzői?
   - \emph{Ezt beírtam a \ref{sec:otlet}.\ rész végére. Jó így, nem? :)}
@@ -239,11 +595,19 @@ closeness centrality grafikon:
 Mi van az alján, mi van a tetején?}
 
 \item
-\embf{A két 9-es ugyanaz a dolog?}
+  \embf{A két 9-es ugyanaz a dolog?} javítottam, mostmár csak egy 9-es van.
+    (És két 19-es, ami ugyanaz, de az egyik kommentben.)
 
 \item
 \embf{Stimmel, hogy kerület == különcség=sugár? nem különcség=átmérő?
 A vessző az egyetlen 9-es?}
+    a sugár és az átmérő számok, a közép és a periphery halmaz
+    sugár = min különcség
+    átmérő = max különcség
+    közép = {v: különcség(v) = sugár} = {,}
+    igen, vessző az egyetlen
+    periphery = {v: különcség(v) = átmérő}
+    de erről nem írunk
 
 \item
 Nem jöttem rá, hogy ez miért nem működik:
@@ -253,265 +617,70 @@ Nem jöttem rá, hogy ez miért nem működik:
 
 \end{itemize}
 
+\section{Friss ,,betweenness'' jegyzetek XXX}
 
-\section{Az ötlet}
-\label{sec:otlet}
-% Sztem főként \cite{kovacs2012magyar} alapján...
+Kérdés: tényleg arányos-e örökké (annak kell-e lennie),
+a \degree\ és a \bness?\\
+\embf{Mosmá kijött, hogy nem!}\\
+= van olyan, hogy ,,\degree\ sok + \bness\ kevés''
+(= ez mi is lenne ábrával?)\\
+meg hogy ,,\degree\ kevés + \bness\ sok''
+(= ugye ez az, hogy két gombolyag összekötve egy vonallal)\\
+-- vagy legalább az egyik előfordul. :)
 
-% Def: sk-f h
-Azokat a hálózatokat, ahol a befokszám-eloszlás
-Zipf-eloszlást követ, \emph{skálafüggetlen hálózat}oknak nevezzük
-\cite{Zipf:1965,Barabasi:1999}
-\cite[703.\ oldal]{kovacs2012magyar}.
+\embf{2017.11.23.\ A csúnya ábrát nagyon szeretem,
+az eddig a főfő eredményünk! (!) XXX :)}\\
+\XXXb{Sikerül annotálni?
+Mely szavak vannak vajon az egyes kitüntetett pontokon?}
+
+-----
+
+ - Shahadat Uddin et al.:
+Network Effects on Scientific Collaborations\\
 %
-Régóta tudjuk, hogy a szöveg szavainak gyakorisági eloszlása
-Zipf-eloszlást követ.
-% XXX mi is a jó/sztenderd hivatk itt?
+,,\degree\ sok + \bness\ kevés'' esetről azt mondja hogy:
+"It could be explained by the fact that some authors have high number of collaborations with many different other authors; however, they do not play a bridging role in the co-authorship network."
+
+- Carlo Morselli:
+Assessing Vulnerable and Strategic Positions in a Criminal Network\\
+% [./morselli_highlow_10.1.1.1027.9852.pdf]
 %
-Az a feladat, hogy találjunk egy konstrukciót,
-melynek segítségével a szövegbeli szógyakoriság
-éppen a befokszám lesz egy alkalmasan megalkotott gráfban.
-%
-Így skálafüggetlen hálózatot kapunk.
+szép ábra (Figure 1): \degree\ vs \bness 4 variációja! (!) XXX :)
+% Qin Wang is mondja, hogy van ilyen, csak csúnyább az ábrája... :)
 
-% a konstrukció
-Az ötlet nagyon egyszerű:
-a hálózat csomópontjai a korpusz szavai lesznek,
-menjünk végig a korpuszon és
-minden szó esetén rajzoljunk be egy (1 súlyú) nyilat a hálózatba,
-ami az adott szóból indul ki és őt közvetlenül követő szóhoz vezet.
-%
-Ha egy szópár többedszerre fordul akkor rajzoljunk be még egy nyilat,
-vagy ami ezzel ekvivalens, a nyíl súlyához adjunk hozzá 1-et.
-%
-\Aref{fig:scfr_pelda}.\ ábrán látható hálózatot kapjuk.
-%
-Ez egy olyan gráf lesz, melyben a csomópontok szavak,
-és az $A\matnyil B$ él akkor létezik, ha van $AB$ bigram a korpuszban,
-és az él súlya $AB$ bigram gyakorisága.
+\bness: el lehet mondani, amit ezekről szoktak:
+\begin{itemize}
+\item
+central = ,,Most important actor'' (Ann McCranie diái szerint)
+\item
+high \bness\ = ,,cutpoint''
+wikipedia: ,,Betweenness centrality is related to a network's connectivity, in so much as high betweenness vertices have the potential to disconnect graphs if removed.''
+Ha kiszedjük a ,,\bness\ sok'' pontokat, akkor szétesik a hálózat.
+Kérdésem: mire esik szét?
+Marci szerint nem érdekes, mert folytonos lesz a szétesés...
+\end{itemize}
 
-\begin{figure}[ht]
-\begin{center}
-\includegraphics[width=6cm]{scfr_pelda.pdf}
-\end{center}
-\caption{,,A nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál.''
-példamondat ábrázolása.
-A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
-\label{fig:scfr_pelda}
-\end{figure}
+-----
 
-A fenti reprezentáció tehát skálafüggetlen hálózatot eredményez.
-%
-Ez azért nagyon jó, mert a skálafüggetlen hálózatok elméletének
-\cite{barabasi2009scalefree}
-% XXX egyrészt kamu, mert nem olvastam,
-%     és nem is tudom mennyire jó kiindulópontnak,
-%     másrész jó, mert sok fontos hivatkozás van benne! (+ rövid)
-az elmúlt évek során kidolgozott összes 
-eszközét, módszerét, mérőszámát alkalmazni tudjuk rá.
+infó a dolgokról:
+\code{https://networkx.github.io/documentation/networkx-1.10/reference/algorithms.html}
 
-% "vmi értelmeset fog mondani"
-Bízunk benne, hogy ezzel az eszköztárral
-valami újat tudunk mondani a szövegről,
-új módon tudjuk megragadni a szöveg bizonyos jellegzetességeit.
+-----
 
-% - vö: Varjú Zoli: "Kisvilágunk a nyelv"
-%   itt (Ferrer és Solé, 2001) eljárását csinálja,
-%   ami  \emph{nem pont az}, amit én írok! \XXXb{Ez nagyon kell!}
-%   \nyil úh esetleg mégis érdekes lehet
-%      egy MSZNY poszter erejéig megmutatni a gondolatomat! (!) XXX :)
-%   -- de jó lenne, ha pont az enyémből jönnének olyan szép dolgok,
-%      ami a Varjú Zoliéból nem, és pont azért, mert
-%      nem csak a közvetlen rákövetkezést vette! (!) XXX :)
-Fontos megjegyezni, hogy a fenti konstrukció lényegesen eltér
-attól a bevett megközelítéstől,
-mely esetében akkor húzunk be egy (irányítatlan!) élt
-két szó között, ha egy közös trigramban megtalálhatók,
-más szóval, ha az egyik a másiktól (jobbra vagy balra)
-1 vagy 2 szó távolságra van
-\cite{cancho2001thesmall}.
-Ennél a modellnél a szöveg természetes balról jobbra rákövetkezése
-nincs reprezentálva,
-szemben a mi modellünkkel, ahol viszont lényegi elem.
-%
-% XXX vö: szemantika vs. szintaxis!
-Emiatt a most bemutatott modell várhatóan kevésbé szemantikai,
-inkább szintaktikai jellemzőket tud majd megragadni.
-%
-% reviewer:
-% "Milyen alkalmazásait tervezi a szerző a javasolt hálózatnak?"
-% - mittomén, majd meglátjuk, alapkutatás! :)
-A kutatás feltáró alapkutatás jellegéből adódóan
-az eredmények esetleges majdani alkalmazása nem témája jelen cikknek.
-
-Vizsgálatainkat az MNSZ2 \cite{oravecz2014hungarian}
-véletlenül választott 1000 illetve 10000 mondatán végeztük.
-%
-Az elemzéseinkhez a NetworkX python csomagot használtuk
-\cite{hagberg2008exploring}.
-
-
-\section{Eredmények}
-
-\subsection{Erős összefüggőség}
-Az első nagyon egyszerű kérdés, hogy erősen összefüggő-e a gráf,
-azaz minden szóból elérhető-e irányított úton az összes többi szó.
-Lényegében erősen összefüggő lesz a gráf,
-esetleg a korpusz elején és végén lévő
-hapax szavakból álló ,,farok'' fordulhat elő,
-ami megbontja az erős összefüggőséget
-(ld.\ \aref{fig:scfr_pelda}.\ ábrán a \emph{nagyobbnál} szót).
-% de hát biztos minden korpusz \emph{A}-val és ponttal végződik. :)
-
-\subsection{Kisvilág tulajdonság}
-A kisvilág szerkezet, amit már  Karinthy is megsejtett 1929-es
-  novellájában, meglepőnek tűnhet, de Erdős--Rényi-féle véletlen grafikonokban
-    is előfordul. Ha a élek beválasztását kontrolláló $p$ elég nagy ahhoz, hogy
-    az egész hálózat összekapcsolódjon, akkor az $L$ átlagos távolság csak
-    logaritmikusan növekszik (Erdős \& Rényi, 1960). A kisvilág-szerkezet
-    jellemzésében az alacsony $C$ klaszterezési együtthatót is meg szokták
-    követelni (Watts és Strogatz 1998) de ennek az irányított gráfokra való
-    általánosítása nem tűnik triviálisnak, ezért itt a legrövidebb utak
-    hosszából számított statisztikákra szorítkozunk. Ez a mi gráfunkban
-    maximálisan 9, ami több, mint a közösségi hálókra Karinthy által helyesen
-    megsejtett 6, de ez 
-    % a hálózat irányítottságának köszönhető, írta Bálint, de Marci nem ért
-    % egyet, mert a közösségi gráfok is irányítottak.
- megítélésünk szerint még kis világnak tekinthető.
-    
-\subsection{Skálafüggetlenség} 
-
-  A sklálafüggetlen gráfok definiáló tulajdonsága, hogy a fokszámok
-  hatványeloszlást követnek (Barabási és Albert 1999). Ezt nálunk Zipf törvénye
-  miatt biztosítja az, hogy (az első és az ulsó szó kivételével) a be- és a
-  kiélek súlyösszege egyaránt megegyezik a szónak a korpuszban való
-  gyakoriságával.  Az elméletileg garantált tulajdonságot statisztikailag is
-  ellenőriztük.  A fokszámeloszlást exponenciális eloszlással összehasonlítva
-  133-as likelyhood-ratiót és $5.91\cdot 10^{-6}$-os szignifikanciaszintet
-  kaptunk. A Zipf-együttható 2.20-nak adódott, ami összhangban van azzal, hogy
-  az angolban 1.25 körülre teszik \cite{Kornai:2008}, a magyar pedig gazdagabb
-  morfológiájú, így a Zipf-együttható is magasabbnak várható.
-
-\subsection{Távolságok}
-  Egy másik gráfmérték is hasznosnak tűnik az együttelőfordulási gráf
-    elemzésében, a csúcsok különcsége (\emph{eccentricity}), vagyis
-    az adott csúcsból az összes többi
-    csúcsba vezető legrövidebb utak hosszának maximuma.
-    Míg a többi vizsgálatot
-    tízezer mondatos mintán végeztük, az ebben a pontban említetteket csak ezer
-    mondatoson, mert az összes (rendezett) csúcspárra ki kell hozzá számolni a legrövidebb
-    út hosszát, aminek nagy az időkomplexitása.
-    A \emph{sugár} (a legkisebb különcség) nálunk 9, 
-    az \emph{átmérő} (a maximális különcség) 19.
-    Szemléletesen \emph{közép}nek \emph{(center)}
-    % külterület}nek? szélnek? \emph{(periphery)} 
-    hívják azokat a pontokat, amelyeknek a különcsége megegyezik a sugárral.
-    %z átmérővel. 
-    Esetünkben egy ilyen csúcs van, a sok funkcióban használatos vessző (,) token. 
-    % Kiszámoltuk a periphery-t is: ['Megadható', 'two']
-    % -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
-
-% \subsection{...}  TODO
-% \bness\ csúnya az ábra, de nem eléggé
-% XXX XXX végsőbe
-
-\subsection{Closeness centrality}
-
-A közelségi központiság (\emph{closeness centrality}) mérték (mely
-adott csomóponttól az összes többi csomópontba vezető
-legrövidebb utak hosszának átlagaként adódik)
-% XXX wikipedia alapján...
-% XXX és akkor nagy a clo-centr, ha ez az érték kicsi????
-egy érdekes jelenséget mutat
-(2.~ábra).  %\ref{fig:closeness}
-%
-A szavak egységes eloszlásban helyezkednek el.
-Az eloszlásból néhány olyan elem lóg ki, amely
-,,nem illeszkedik a magyar szövegbe'':
-ilyen az egyenlőségjel és egy HTML entity ({\tt \&verbar;}),
-illetve két angol szó (a \liex{the} és az \liex{of}),
-melyek előfordulnak a korpuszban.
-%
-% Ez egy fokszám vs closeness_centrality grafikon, ugye?
-Ezeknek a tokeneknek tehát kisebb
-a közelségi központiság értékük annál,
-mint amit gyakoriságuk alapján várnánk.
-%
-A kilógó elemek pontos karakterizálásához további vizsgálat szükséges.
-%
-% XXX Tudjuk értelmezni valahogy azt a helyet, ahol ő van? -> végsőbe
-
-\begin{sidewaysfigure}[h]
-\begin{center}
-\includegraphics[width=25cm]{current-flow-closeness.png}
-\caption{A szavak eloszlása \emph{closeness centrality} szerint.}
-\end{center}
-\label{fig:closeness}
-\end{sidewaysfigure}
-
-\subsection{HITS}
-
-A HITS (vagy hub/authority) algoritmus bizonyos jelentős csomópontokat
-keres a hálózatban. A \emph{hub}-ok sok mindenkivel állnak kapcsolatban,
-az \emph{authority}-k pedig megbízható hiteles információt
-tudnak adni.
-% XXX miről?
-%
-Ezzel az algoritmussal kaptuk a leginkább szembeötlő eredményünket.
-
-%\Aref{fig:hits-auth}.\ 
-A 3.~ábrán látszik,
-hogy a kötőszavak és az igék jól elkülönülnek:
-a bal lent -- jobb fent átlótól inkább följebb vannak a kötőszavak,
-és ettől az átlótól inkább lejjebb vannak az igék.
-Azaz a kötőszavak tekintélye nagyobb,
-az igéké pedig kisebb mit a szavaké általában.
-% \embf{HITS / authorities} =
-% bal-fent: kötőszavak, jobb-lent: igék\\
-% \XXX{talán ez eddig a legérdekesebb, amit bele lehet magyarázni...}\\
-% \liex{vagy} milyen szépen kilóg -- mert igének címkézzük (véletlenül),
-% de a kötőszavak között van! (!) XXX :)
-%
-% reviewer kedvéért:
-Ez természetesen nem egyszerűen annak köszönhető,
-hogy a kötőszavak gyakorisága kiemelkedően magas,
-hiszen az azonos gyakoriságú igék és kötőszavak válnak el egymástól.
-%
-Az eredmény összefügghet azzal, hogy a kötőszavak
-lényegében mindenféle típusú elemmel kapcsolódni tudnak,
-az igék pedig -- ragaszkodva bővítményeikhez, vonzataikhoz --
-mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
-
-\begin{sidewaysfigure}[h]
-\begin{center}
-\includegraphics[width=25cm]{conv-verb-auth.png}
-\caption{A HITS algoritmus eredménye.
-A nagyobb piros ponttal jelölt kötőszavak balra fent
-(magasabb authority),
-a nagyobb zöld ponttal jelölt igék jobbra lent
-(alacsonyabb authority)
-helyezkednek el
-a fokszám (gyakoriság) vs authority grafikonon.}
-\end{center}
-\label{fig:hits-auth}
-\end{sidewaysfigure}
-
-
-\section{Összefoglalás}
-
-Az irányított skálafüggetlen hálózattá alakított szöveget
-érintő első vizsgálatainkban feltérképeztük,
-hogy az egyes hálózatelméleti eszközök
-mit mondanak erről a hálózatról, milyen értékek a jellemzőek.
-%
-Legérdekesebb kezdeti eredményünk az,
-hogy úgy tűnik, hogy a HITS algoritmus
-képes egymástól elválasztani bizonyos szócsoportokat,
-és ezek a csoportok összefüggésben vannak a szófajokkal.
+ezt mondom:
+Az összes mérték azért van, mert nem látjuk a gráfot,
+és ezekkel szeretnénk látni. :)
 
 
 
-\begin{comment}
+
+%\end{comment}
+
+% --------------------------------------------------------------------------
+
+
+
+\end{document}
 
 \section{Vizsgálandó dolgok XXX :)}
 
@@ -587,8 +756,8 @@ Pl.\ a névelőnek nem nagy? [Ez már egy bazi jó eredmény lenne sztem!]}
 
 \end{itemize}
 
-\item 
-\embf{sűrűség?} 
+\item
+\embf{sűrűség?}
 ,,Ha egy hálózati csúcspont néhány lépéses környezetén belüli csúcspontok között viszonylag sok él van, akkor a hálózatnak ezt a tartományát sűrűnek mondjuk.''\\
 \XXXb{Mit tudunk mondani a sűrűségről általában? Vagy sűrű tartományokról? Vannak? Hogy is lehet őket megtalálni?}
 
@@ -610,64 +779,6 @@ nemcsak \emph{centrality} van, hanem \emph{prestige} is:
 a legfontosabb prestige index: \embf{rank} (Ann McCranie diái)
 
 \end{itemize}
-
-
-
-\section{Friss ,,betweenness'' jegyzetek XXX}
-
-Kérdés: tényleg arányos-e örökké (annak kell-e lennie),
-a \degree\ és a \bness?\\
-\embf{Mosmá kijött, hogy nem!}\\
-= van olyan, hogy ,,\degree\ sok + \bness\ kevés''
-(= ez mi is lenne ábrával?)\\
-meg hogy ,,\degree\ kevés + \bness\ sok''
-(= ugye ez az, hogy két gombolyag összekötve egy vonallal)\\
--- vagy legalább az egyik előfordul. :)
-
-\embf{2017.11.23.\ A csúnya ábrát nagyon szeretem,
-az eddig a főfő eredményünk! (!) XXX :)}\\
-\XXXb{Sikerül annotálni?
-Mely szavak vannak vajon az egyes kitüntetett pontokon?}
-
------
-
- - Shahadat Uddin et al.:
-Network Effects on Scientific Collaborations\\
-%
-,,\degree\ sok + \bness\ kevés'' esetről azt mondja hogy: 
-"It could be explained by the fact that some authors have high number of collaborations with many different other authors; however, they do not play a bridging role in the co-authorship network."
-
-- Carlo Morselli:
-Assessing Vulnerable and Strategic Positions in a Criminal Network\\
-% [./morselli_highlow_10.1.1.1027.9852.pdf]
-%
-szép ábra (Figure 1): \degree\ vs \bness 4 variációja! (!) XXX :)
-% Qin Wang is mondja, hogy van ilyen, csak csúnyább az ábrája... :)
-
-\bness: el lehet mondani, amit ezekről szoktak:
-\begin{itemize}
-\item 
-central = ,,Most important actor'' (Ann McCranie diái szerint)
-\item 
-high \bness\ = ,,cutpoint''
-wikipedia: ,,Betweenness centrality is related to a network's connectivity, in so much as high betweenness vertices have the potential to disconnect graphs if removed.''
-Ha kiszedjük a ,,\bness\ sok'' pontokat, akkor szétesik a hálózat.
-Kérdésem: mire esik szét?
-Marci szerint nem érdekes, mert folytonos lesz a szétesés...
-\end{itemize}
-
------
-
-infó a dolgokról:
-\code{https://networkx.github.io/documentation/networkx-1.10/reference/algorithms.html}
-
------
-
-ezt mondom:
-Az összes mérték azért van, mert nem látjuk a gráfot,
-és ezekkel szeretnénk látni. :)
-
-
 
 \section{Korábbi jegyzetek XXX}
 
@@ -741,7 +852,7 @@ csak annyit jelent, hogy van \path{ax} és \path{xa} bigram!
 -----
 
 Vannak határozott \emph{irányok}
-(ti.\ ami csak egyik irányba hajlamos menni), pl.\ névelő \nyil fn.  
+(ti.\ ami csak egyik irányba hajlamos menni), pl.\ névelő \nyil fn.
 Ez nem hat a skálafüggetlenség ellen? Talán nem. (Sztem nem.)
 
 -----
@@ -763,7 +874,7 @@ Hiszen (közismerten) mind Zipf. :) Ezeket is lehet nyomni.
 XXX Pollner Péter adna esetleg hozzá szoftvert,
 ami alap dolgokat számolgat? :)
 
-XXX többi (esetleg kapcsolódó) megjegyzés 
+XXX többi (esetleg kapcsolódó) megjegyzés
 \cite{kovacs2012magyar} kapcsán: {\tt mk.INFO}.
 
 ilyenek:
@@ -823,24 +934,3 @@ azzal, hogy a sorrend nálam nagyon számít
 
 meetup Berend Gáborról:
 ,,he also has a keen interest in network science'' (!) :)
-
-\end{comment}
-
-% --------------------------------------------------------------------------
-
-
-\section*{Köszönetnyilvánítás}
-\label{Koszonet}
-
-Sass Bálint kutatásait
-az MTA Bolyai János Kutatási Ösztöndíja támogatta
-(ügyszám: BO/00064/17/1; időtartam: 2017-2020).
-
-
-% ---- Bibliography ----
-%
-%kulon bibtex fajl hasznalata
-\bibliographystyle{splncs}
-\bibliography{minden.bib}
-
-\end{document}
