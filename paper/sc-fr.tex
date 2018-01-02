@@ -7,7 +7,12 @@
 % közvetlenül is felhasználhatók:
 %\usepackage[latin2]{inputenc} 
 \usepackage[utf8]{inputenc}
-\usepackage{t1enc}
+%\usepackage{t1enc}
+
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
 
 \usepackage{tikz-dependency}
 \usepackage{qtree} % emmegmi? XXX
@@ -256,6 +261,7 @@ Nem jöttem rá, hogy ez miért nem működik:
 % Def: sk-f h
 Azokat a hálózatokat, ahol a befokszám-eloszlás
 Zipf-eloszlást követ, \emph{skálafüggetlen hálózat}oknak nevezzük
+\cite{Zipf:1965,Barabasi:1999}
 \cite[703.\ oldal]{kovacs2012magyar}.
 %
 Régóta tudjuk, hogy a szöveg szavainak gyakorisági eloszlása
@@ -365,22 +371,26 @@ A kisvilág szerkezet, amit már  Karinthy is megsejtett 1929-es
     logaritmikusan növekszik (Erdős \& Rényi, 1960). A kisvilág-szerkezet
     jellemzésében az alacsony $C$ klaszterezési együtthatót is meg szokták
     követelni (Watts és Strogatz 1998) de ennek az irányított gráfokra való
-    általánosítása nem tűnik triviálisnak, azért itt a legrövidebb utak
+    általánosítása nem tűnik triviálisnak, ezért itt a legrövidebb utak
     hosszából számított statisztikákra szorítkozunk. Ez a mi gráfunkban
     maximálisan 9, ami több, mint a közösségi hálókra Karinthy által helyesen
-    megsejtett 6, de ez a hálózat irányítottságának köszönhető.
-% megítélésünk szerint még kis világnak tekinthető.
+    megsejtett 6, de ez 
+    % a hálózat irányítottságának köszönhető, írta Bálint, de Marci nem ért
+    % egyet, mert a közösségi gráfok is irányítottak.
+ megítélésünk szerint még kis világnak tekinthető.
     
 \subsection{Skálafüggetlenség} 
+
   A sklálafüggetlen gráfok definiáló tulajdonsága, hogy a fokszámok
-    hatványeloszlást követnek (Barabási és Albert 1999). Ezt nálunk Zipf
-    törvénye miatt 
-    biztosítja az, hogy (az első és az ulsó szó kivételével) a be- és a kiélek
-    súlyösszege egyaránt megegyezik a szónak a korpuszban
-    való gyakoriságával.
-    Az elméletileg garantált tulajdonságot statisztikailag is ellenőriztük.
-    A fokszámeloszlást exponenciális eloszlással összehasonlítva 133-as
-    likelyhood-ratiot és $5.91\cdot 10^{-6}$-os szignifikanciaszintet kaptunk.
+  hatványeloszlást követnek (Barabási és Albert 1999). Ezt nálunk Zipf törvénye
+  miatt biztosítja az, hogy (az első és az ulsó szó kivételével) a be- és a
+  kiélek súlyösszege egyaránt megegyezik a szónak a korpuszban való
+  gyakoriságával.  Az elméletileg garantált tulajdonságot statisztikailag is
+  ellenőriztük.  A fokszámeloszlást exponenciális eloszlással összehasonlítva
+  133-as likelyhood-ratiót és $5.91\cdot 10^{-6}$-os szignifikanciaszintet
+  kaptunk. A Zipf-együttható 2.20-nak adódott, ami összhangban van azzal, hogy
+  az angolban 1.25 körülre teszik \cite{Kornai:2008}, a magyar pedig gazdagabb
+  morfológiájú, így a Zipf-együttható is magasabbnak várható.
 
 \subsection{Távolságok}
   Egy másik gráfmérték is hasznosnak tűnik az együttelőfordulási gráf
@@ -391,16 +401,17 @@ A kisvilág szerkezet, amit már  Karinthy is megsejtett 1929-es
     tízezer mondatos mintán végeztük, az ebben a pontban említetteket csak ezer
     mondatoson, mert az összes (rendezett) csúcspárra ki kell hozzá számolni a legrövidebb
     út hosszát, aminek nagy az időkomplexitása.
-    A \emph{sugár} (a legkisebb excentricitás) nálunk 9, 
-    az \emph{átmérő} (a maximális excentricitás) 19.
-    Szemléletesen \emph{kerületnek} hívják azokat a pontokat, amelyeknek a
-    különcsége megegyezik a sugárral. Esetünkben egy ilyen csúcs van, a sok
-    funkcióban használatos vessző (,) token. 
-%    Kiszámoltuk a \emph{széleket} (periphery) is, de az nx.diameter (G, stb_d) A _center_ nx.center (G, stb_d) A __ periféria olyan csomópontok halmaza, amelyeknek az átmérője azonos az excentricitással: nx periféria (G, stb_d) 
-%    eccentricity, radius, diameter, center, periphery...
-% -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
+    A \emph{sugár} (a legkisebb különcség) nálunk 9, 
+    az \emph{átmérő} (a maximális különcség) 19.
+    Szemléletesen \emph{közép}nek \emph{(center)}
+    % külterület}nek? szélnek? \emph{(periphery)} 
+    hívják azokat a pontokat, amelyeknek a különcsége megegyezik a sugárral.
+    %z átmérővel. 
+    Esetünkben egy ilyen csúcs van, a sok funkcióban használatos vessző (,) token. 
+    % Kiszámoltuk a periphery-t is: ['Megadható', 'two']
+    % -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
 
-% \subsection{...} 
+% \subsection{...}  TODO
 % \bness\ csúnya az ábra, de nem eléggé
 % XXX XXX végsőbe
 
@@ -412,7 +423,7 @@ legrövidebb utak hosszának átlagaként adódik)
 % XXX wikipedia alapján...
 % XXX és akkor nagy a clo-centr, ha ez az érték kicsi????
 egy érdekes jelenséget mutat
-(\ref{fig:closeness}.\ ábra).
+(2.~ábra).  %\ref{fig:closeness}
 %
 A szavak egységes eloszlásban helyezkednek el.
 Az eloszlásból néhány olyan elem lóg ki, amely
@@ -448,7 +459,8 @@ tudnak adni.
 %
 Ezzel az algoritmussal kaptuk a leginkább szembeötlő eredményünket.
 
-\Aref{fig:hits-auth}.\ ábrán látszik,
+%\Aref{fig:hits-auth}.\ 
+A 3.~ábrán látszik,
 hogy a kötőszavak és az igék jól elkülönülnek:
 a bal lent -- jobb fent átlótól inkább följebb vannak a kötőszavak,
 és ettől az átlótól inkább lejjebb vannak az igék.
@@ -467,7 +479,7 @@ hiszen az azonos gyakoriságú igék és kötőszavak válnak el egymástól.
 %
 Az eredmény összefügghet azzal, hogy a kötőszavak
 lényegében mindenféle típusú elemmel kapcsolódni tudnak,
-az igék pedig ragaszkodva bővítményeikhez, vonzataikhoz
+az igék pedig -- ragaszkodva bővítményeikhez, vonzataikhoz --
 mindig ,,ugyanolyan'' elemekkel kapcsolódnak.
 
 \begin{sidewaysfigure}[h]
