@@ -151,7 +151,7 @@ menjünk végig a korpuszon és
 minden szó esetén rajzoljunk be egy (1 súlyú) nyilat a hálózatba,
 ami az adott szóból indul ki és őt közvetlenül követő szóhoz vezet.
 %
-Ha egy szópár többedszerre fordul akkor rajzoljunk be még egy nyilat,
+Ha egy szópár többedszerre fordul elő akkor rajzoljunk be még egy nyilat,
 vagy ami ezzel ekvivalens, a nyíl súlyához adjunk hozzá 1-et.
 %
 \Aref{fig:scfr_pelda}.\ ábrán látható hálózatot kapjuk.
@@ -200,7 +200,8 @@ valami újat tudunk mondani a szövegről,
 %      nem csak a közvetlen rákövetkezést vette! (!) XXX :)
 
 A mienkhez leghasonlóbb kutatás alighanem a TextRank \cite{mihalcea2004textrank}.
-Mihalcea és Tarau az irányított, 2-széles ablakkal végzett kutatásaikról azt
+Mihalcea és Tarau az irányított, 2-széles ablakkal végzett kulcsszókinyerési
+kísérleteikről azt
 írják, hogy rosszabb eredményeket hoztak, mint a az irányítatlan eset. Azt a
 meglepő következtetést vonják le, hogy a szövegnek nincs természetes iránya.
 Ha nyelvi adatból készült skálafüggetlen gráfról beszélünk, nem kerülhető meg
@@ -251,7 +252,7 @@ ebben a modellben, melyekre számos jó hub mutat.
 
 A hub- és tekintélyérték számítása iteríatíve történik.  Kezdetben a számokat
 tetszés szerint választjuk (például minden oldalnak ugyanazt), majd minden
-iterációban egy oldal mértékadósága a rá mutató oldalak hubértékének összege
+iterációban egy oldal tekintéle a rá mutató oldalak hubértékének összege
 lesz, a hubérték pedig a lap által mutatott oldalak tekintélyének összege.  Az
 iterációk között a hub- illetve tekintélyértékek négyzetösszegét normalizáljuk.
 % bizonyos jelentős csomópontokat keres a hálózatban. A \emph{hub}-ok sok
@@ -309,8 +310,8 @@ szorítkozunk.  A mi 7 K-csúcsú, 13 K-élű gráfunkban az átlagos távolság
 $L=4.89$. Az aszimptotikus tulajdonságot a poszteren elemezzük, amit a projekt
 repójában talál meg az olvasó.
 % maximálisan 19, ami lényegesen több, mint a közösségi hálókra Karinthy által
-% helyesen megsejtett 6, de ez a hálózat irányítottságának köszönhető, írta
-% Bálint, de Marci nem ért egyet, mert a közösségi gráfok is irányítottak.
+% helyesen megsejtett 6, TODO de ez a hálózat irányítottságának köszönhető, írta
+% Bálint, de Marci nem értett egyet, de talán mégis
 
 \subsection{Skálafüggetlenség}
 
@@ -344,7 +345,7 @@ morfológiájú, így a Zipf-együttható is magasabbnak várható.
     % Kiszámoltuk a periphery-t is: ['Megadható', 'two']
     % -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
 
-% \subsection{...}  TODO
+% \subsection{...}  
 % \bness\ csúnya az ábra, de nem eléggé
 % XXX XXX végsőbe
 
