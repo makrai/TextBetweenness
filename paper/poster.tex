@@ -1,0 +1,184 @@
+% koncepció: (a closeness cent és?) a HITS eredmény, a többi csak ötlet, szemléltetés
+% the poster is organized as follows
+% ötlet
+% skálafüggetlen
+% kisvilág
+%   távolságok
+%   klaszterek irányítittra való általánosítása problémás
+% központiság 
+%   eye-candy: https://en.wikipedia.org/wiki/Centrality
+%   bness extrém esetei
+%   közelségi központiság
+% clustering
+% HITS 
+\documentclass{beamer}
+\usepackage[size=a0,debug]{beamerposter}
+
+\usepackage{graphicx}			% allows us to import images
+\usepackage{booktabs}
+%\usepackage{amsmath}
+%\usepackage{multirow}
+\usepackage[utf8]{inputenc}
+\usepackage{t1enc}
+%\usepackage{anyfontsize}
+%\usepackage{authordate1-4}
+%%\usepackage{multirow}
+\usetheme{cpbgposter}
+\usepackage[round]{natbib}
+%\usepackage{tikz}
+\usepackage{url}
+\usepackage[magyar]{babel}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Define the column width and poster size
+% To set effective sepwid, onecolwid and twocolwid values, first choose how
+% many columns you want and how much separation you want between columns
+% The separation I chose is 0.024 and I want 4 columns
+% Then set onecolwid to be (1-(4+1)*0.024)/4 = 0.22
+% Set twocolwid to be 2*onecolwid + sepwid = 0.464
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newlength{\sepwid}
+\newlength{\onecolwid}
+\newlength{\twocolwid}
+\setlength{\paperwidth}{48in} % hogy ne lógjon rá az utolsó oszlop a keretre
+%\setlength{\paperheight}{36in}
+\setlength{\sepwid}{0.024\paperwidth}
+\setlength{\onecolwid}{0.22\paperwidth}
+\setlength{\twocolwid}{0.464\paperwidth}
+%\setlength{\topmargin}{-0.5in}
+%\usetheme{confposter}
+%\usepackage{exscale} % scaling of the math extension font cmex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The next part fixes a problem with figure numbering. Thanks Nishan!
+% When including a figure in your poster, be sure that the commands are typed in the following order:
+% \begin{figure}
+% \includegraphics[...]{...}
+% \caption{...}
+% \end{figure}
+% That is, put the \caption after the \includegraphics
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usecaptiontemplate{
+  \small
+  \structure{\insertcaptionname~\insertcaptionnumber:}
+\insertcaption}
+
+% Define colours (see beamerthemeconfposter.sty to change these colour
+% definitions) TODO
+
+\setbeamercolor{block title}{fg=dblue,bg=white}
+\setbeamercolor{block body}{fg=black,bg=white}
+\setbeamercolor{alerted title}{fg=white,bg=dblue}
+\setbeamercolor{block alerted title}{fg=white,bg=dblue!70}
+\setbeamercolor{block alerted body}{fg=black,bg=dblue!10}
+\setbeamercolor{alerted text}{fg=dgreen}
+\setbeamercolor{item}{fg=dgreen}
+\setbeamercolor{item projected}{bg=dgreen}
+
+\author{Makrai Márton és Sass Bálint}
+\title{A szöveg mint skálafüggetlen hálózat}
+\institute{MTA Nyelvtudományi Intézet\break 
+{\tt \{makrai.marton,sass.balint\}@nytud.mta.hu}}
+
+\begin{document}
+
+\addtobeamertemplate{headline}{} 
+{
+  \begin{tikzpicture}[remember picture,overlay] 
+    \node [shift={(-10 cm,-4cm)}] 
+    at (current page.north east)
+    {\includegraphics[height=5cm]{/home/makrai/repo/paper/Common/Logo/nytud/logo_only_tr.png}}; 
+  \end{tikzpicture} 
+}
+
+\begin{frame}[t]
+  \begin{columns}[t]% the [t] option aligns the column's content at the top
+
+    \begin{column}{\sepwid}\end{column}			% empty spacer column
+
+    \begin{column}{\onecolwid} % bal oszlop
+      \begin{block}{Hatványeloszlás} 
+        \begin{itemize}
+          \item szógyakoriságok \cite{Zipf:1935}
+          \item skálafüggetlen gráf \citep{barabasi1999emergence}
+          \item most: irányítitt gráf súlyozott élekkel bigramgyakorliságokból
+        \end{itemize}
+          \begin{figure}[ht]
+            \begin{center}
+              \includegraphics[width=.6\columnwidth]{scfr_pelda.pdf}
+            \end{center}
+            \caption{,,A nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál.''
+            példamondat ábrázolása.
+            A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
+            \label{fig:scfr_pelda}
+          \end{figure}
+      \end{block}
+
+      %\smallskip
+
+      \begin{block}{Kapcsolódó irodalom} 
+        \begin{itemize}
+          \item TextRank \citep{mihalcea2004textrank}, kulcsszókinyerés
+            \begin{quote}
+              results [...] are worse than results obtained with undirected
+                graphs, which suggests that [...] there is no natural “direction”
+            \end{quote}
+          \item szemantikus hálók \citep{steyvers2005large}
+          \item trigram \citep{cancho2001thesmall}
+        \end{itemize}
+      \end{block}
+
+      %\begin{block}{Példa} a \end{block}
+    \end{column}
+
+        \begin{column}{\sepwid}\end{column}			% empty spacer column
+
+          \begin{column}{\twocolwid} % középső oszlop
+            \begin{block}{Közelségi központiság \emph{(closeness centrality)}} irányított \end{block}
+              \begin{figure}[h]
+                \begin{center}
+                  \includegraphics[width=\columnwidth]{current-flow-closeness.png}
+                  \caption{A szavak eloszlása \emph{closeness centrality} szerint.}
+                \end{center}
+                \label{fig:closeness}
+              \end{figure}
+            \begin{block}{HITS} \end{block}
+              \begin{figure}[h]
+                \begin{center}
+                  \includegraphics[width=\columnwidth]{conj-verb-auth.png}
+                  \caption{A HITS algoritmus eredménye.
+                  A nagyobb piros ponttal jelölt kötőszavak balra fent
+                  (magasabb authority),
+                  a nagyobb zöld ponttal jelölt igék jobbra lent
+                  (alacsonyabb authority)
+                  helyezkednek el
+                  a fokszám (gyakoriság) vs authority grafikonon.}
+                \end{center}
+                \label{fig:hits-auth}
+              \end{figure}
+          \end{column}
+
+    \begin{column}{\sepwid}\end{column}			% empty spacer column
+
+      \begin{column}{\onecolwid} % jobb oszlop
+        \begin{block}{Központigság}
+          köztiség
+        \end{block}
+
+
+        \begin{block}{További kutatás}
+          \begin{itemize}
+            \item klikkek szófajok szerint?
+          \end{itemize}
+        \end{block}
+        \begin{block}{Hivatkozások}
+          \bibliographystyle{abbrvnat}
+          \bibliography{minden}      
+        \end{block}
+      \end{column}
+
+  \end{columns}
+\end{frame}
+\end{document}

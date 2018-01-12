@@ -3,9 +3,6 @@
 \usepackage[a4paper,includeheadfoot,top=1.65in,bottom=1.65in,left=1.73in,hcentering]{geometry}
 \usepackage[pdftex]{graphicx}
 
-% Ezek egyikének bekapcsolásával a magyar ékezetes karakterek
-% közvetlenül is felhasználhatók:
-%\usepackage[latin2]{inputenc}
 \usepackage[utf8]{inputenc}
 %\usepackage{t1enc}
 
@@ -230,9 +227,9 @@ A kutatás feltáró alapkutatás jellegéből adódóan
 az eredmények esetleges majdani alkalmazása nem témája jelen cikknek.
 
 A következő alszakaszban bemutatandó HITS algoritmus, amivel a leglátványosabb
-eredményeket kaptuk.  nagyjából egyidős a skálafüggetlen gráfok ma népszerű
-fogalmával.  Az utóbbi évtizedekben természetesen számos kutatás vizsgált
-skálafüggetlen gráfokat a HITS segítségével \cite{zhang2007expertise}.
+eredményeket kaptuk.  A HITS nagyjából egyidős a skálafüggetlen gráfok ma
+népszerű fogalmával.  Az utóbbi évtizedekben természetesen számos kutatás
+vizsgált skálafüggetlen gráfokat a HITS segítségével \cite{zhang2007expertise}.
 
 \subsection{HITS}
 
@@ -297,18 +294,24 @@ című novellájá}t:
 \end{quote}
 
 A meglepően kis távolság, melyet úgy formalizálhatunk, hogy az $L$ átlagos
-távolság csak logaritmikusan növekszik a csúcsok számában, nem a
-skálafüggetlen gráfok sajátja: Erdős--Rényi-féle véletlen gráfoknál is fennáll
+távolság csak logaritmikusan növekszik a csúcsok számában, nem a skálafüggetlen
+gráfok sajátja: Erdős--Rényi-féle véletlen gráfoknál is fennáll
 \cite{erdos1960evolution}, ha a élek beválasztását kontrolláló $p$ elég nagy
 ahhoz, hogy az egész hálózat összekapcsolódjon. (Vegyük észre a definícióban,
 hogy önmagában egy gráf kisvilág tulajdonságáról nem beszélhetünk, csak egy
-olyan gráfsorozat esetében, ahol a csúcsszám végtelenhez tart.) A kisvilág-szerkezet jellemzésében az alacsony $C$
-klaszterezési együtthatót is meg szokták követelni \cite{watts1998collective},
-de ennek az irányított gráfokra való általánosítása nem tűnik triviálisnak,
-ezért tanumányunkban  a legrövidebb utak hosszából számított statisztikákra
-szorítkozunk.  A mi 7 K-csúcsú, 13 K-élű gráfunkban az átlagos távolság
-$L=4.89$. Az aszimptotikus tulajdonságot a poszteren elemezzük, amit a projekt
-repójában talál meg az olvasó.
+olyan gráfsorozat esetében, ahol a csúcsszám végtelenhez tart.) 
+% directed small world TODO
+%  \item \cite{sanchez2002nonequilibrium} az első fél oldal érdekes, de utána
+%    nem érthető, és csak generatív definíciót láttam, olyat nem, ami alapján eg
+%    meglevő gráfról meg tudnám állapítani, hogy irányított kisvilág-e
+% \item Bassett:2006
+A kisvilág-szerkezet jellemzésében az alacsony $C$ klaszterezési együtthatót is
+meg szokták követelni \cite{watts1998collective}, de ennek az irányított
+gráfokra való általánosítása nem tűnik triviálisnak, ezért tanumányunkban  a
+legrövidebb utak hosszából számított statisztikákra szorítkozunk.  A mi 7
+K-csúcsú, 13 K-élű gráfunkban az átlagos távolság $L=4.89$. Az aszimptotikus
+tulajdonságot a poszteren elemezzük, amit a projekt repójában talál meg az
+olvasó.
 % maximálisan 19, ami lényegesen több, mint a közösségi hálókra Karinthy által
 % helyesen megsejtett 6, TODO de ez a hálózat irányítottságának köszönhető, írta
 % Bálint, de Marci nem értett egyet, de talán mégis
@@ -327,23 +330,22 @@ angolban 1.25 körülre teszik \cite{Kornai:2008}, a magyar pedig gazdagabb
 morfológiájú, így a Zipf-együttható is magasabbnak várható.
 
 \subsection{Távolságok}
-  Egy másik gráfmérték is hasznosnak tűnik az együtt-előfordulási gráf
-    elemzésében, a csúcsok különcsége (\emph{eccentricity}), vagyis
-    az adott csúcsból az összes többi
-    csúcsba vezető legrövidebb utak hosszának maximuma.
-    Míg a többi vizsgálatot
-    tízezer mondatos mintán végeztük, az ebben a pontban említetteket csak ezer
-    mondatoson, mert az összes (rendezett) csúcspárra ki kell hozzá számolni a legrövidebb
-    út hosszát, aminek nagy az időkomplexitása.
-    A \emph{sugár} (a legkisebb különcség) nálunk 9,
-    az \emph{átmérő} (a maximális különcség) 19.
-    Szemléletesen \emph{közép}nek \emph{(center)}
-    % külterület}nek? szélnek? \emph{(periphery)}
-    hívják azokat a pontokat, amelyeknek a különcsége megegyezik a sugárral.
-    %z átmérővel.
-    Esetünkben egy ilyen csúcs van, a sok funkcióban használatos vessző (,) token.
-    % Kiszámoltuk a periphery-t is: ['Megadható', 'two']
-    % -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
+
+Egy másik gráfmérték is hasznosnak tűnik az együtt-előfordulási gráf
+elemzésében, a csúcsok különcsége (\emph{eccentricity}), vagyis az adott
+csúcsból az összes többi csúcsba vezető legrövidebb utak hosszának maximuma.
+Míg a többi vizsgálatot tízezer mondatos mintán végeztük, az ebben a pontban
+említetteket csak ezer mondatoson, mert az összes (rendezett) csúcspárra ki
+kell hozzá számolni a legrövidebb út hosszát, aminek nagy az időkomplexitása.
+A \emph{sugár} (a legkisebb különcség) nálunk 9,
+az \emph{átmérő} (a maximális különcség) 19.
+Szemléletesen \emph{közép}nek \emph{(center)}
+% külterület}nek? szélnek? \emph{(periphery)}
+hívják azokat a pontokat, amelyeknek a különcsége megegyezik a sugárral.
+%z átmérővel.
+Esetünkben egy ilyen csúcs van, a sok funkcióban használatos vessző (,) token.
+% -> \embf{center} = vessző (!) -- ez tetszik vmiért... :)
+% Kiszámoltuk a periphery-t is: ['Megadható', 'two']
 
 % \subsection{...}  
 % \bness\ csúnya az ábra, de nem eléggé
@@ -840,7 +842,7 @@ csak annyit jelent, hogy van \path{ax} és \path{xa} bigram!
 \smp{ez benne az új, izgi! :) [ez is]
 -- hm.. bár lehet, h pont ezt tudja
    100 éve trivi módon a sima bigram modell
-   \nnyil azért a betweenness meg ezek, hogyzhatnak újat! (!) XXX :)
+   \nnyil azért a betweenness meg ezek, hozhatnak újat! (!) XXX :)
 -- hogy mire lesz jó, azt persze még nem tudom. :)}
 
 -----
