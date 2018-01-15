@@ -126,33 +126,38 @@
             \citep{willinger2009mathematics}
         \end{itemize}
       \end{block}
+      
+      %\begin{block}{Skálafüggetlenség}\end{block}
+
+        \begin{alertblock}{Irányított kisvilág}  \end{alertblock} 
+        \begin{block}{Utak, tranzitivitás} 
       \begin{table}
-      \begin{tabular}{rrr}
+      \begin{tabular}{rrrrrrr}
+        %TODO L, tranz: kell irányítatlan?
         \toprule
-        mondat & szókincs & bigram & $L$ & tranz \\
+        mondat & szókincs & bigram & \multicolumn{2}{c}{$L$} & \multicolumn{2}{c}{tranzitivitás} \\
+        &&&$\rightarrow$&--&$\rightarrow$&--\\
         \midrule
-        1	& 13	& 13 & 2.77 & 0.02086 & 0.007463 \\
-        10	& 125	& 165 & 7.01 & 0.008146 & 0.004343 \\
-        100	& 880	& 1 343 & 6.00 & 0.004051 & 0.00263 \\
-        1 k	& 6 828	& 12 952 & 4.89 & 0.004051 & 0.00263 \\
-        10 k	& 42 992	& 111 141 & 0.002058 & 0.001713 \\
-        100 k	& 225 481	& 865 512 \\
-        1 m	& 1 043 583	& 6  082   994 \\
-        10 m	& 4 444 502	& 38  167   116 \\
-        47 m & 11 245  533 & 119 857  666 \\
+        10 & 125 & 165 & 7.02 & 4.19 & 0.02086 & 0.007463 \\
+        100 & 880 & 1343 & 6.00 & 3.97 & 0.008146 & 0.004343 \\
+        1k & 6828 & 12952 & 4.89 & 3.50 & 0.004051 & 0.00263 \\ 
+        10 k	&     42 992  &     111 141 & 4.11 && 0.002058 & 0.001713 \\
+        100 k	&    225 481  &     865 512 & \\
+        1 m	  &  1 043 583  &   6 082 994 \\
+        10 m	&  4 444 502  &  38 167 116 \\
+        47 m  & 11 245 533  & 119 857 666 \\
         \bottomrule
       \end{tabular}
       \end{table}
+          \begin{itemize}
+            \item MNSZ2 \citep{oravecz2014hungarian}
+          \end{itemize}
+        \end{block}
 
-      %\begin{block}{Skálafüggetlenség}\end{block}
-        \begin{alertblock}{Irányított kisvilág}  
-          legrövidebb irányított utak, 
-          irányított klaszterek együttható \citep{fagiolo2007clustering}
-        \end{alertblock} %TODO
-        \begin{block}{Kisviág 1.: legrövidebb (irányított) utak} \end{block}
-          \begin{block}{Kisviág 2.: irányított klaszterezési együttható}
+          \begin{block}{Irányított klaszterezési együttható \citep{fagiolo2007clustering}}
             \begin{figure}
-              \includegraphics[width=7.5cm]{triangle-directions}
+              \includegraphics[width=7.5cm]{triangle-directions_1}
+              \includegraphics[width=7.5cm]{triangle-directions_2}
             \end{figure}
           \end{block}
     \end{column}
@@ -161,25 +166,12 @@
 
 
       \begin{column}{\twocolwid} % középső oszlop
-        \begin{columns}
-          \begin{column}{.5\columnwidth}
-            \begin{block}{Data}
-              \begin{itemize}
-                \item
-                  MNSZ2 \citep{oravecz2014hungarian}
-              \end{itemize}
-            \end{block}
-          \end{column}
-          \begin{column}{.5\columnwidth}
-            \url{https://github.com/makrai/textBetweenness}
-          \end{column}
-        \end{columns}
         \begin{block}{Közelségi központiság \emph{(closeness centrality)}}
           irányított
           \begin{figure}[h]
             \begin{center}
               \includegraphics[width=\columnwidth]{current-flow-closeness.png}
-                  \caption{A szavak eloszlása \emph{closeness centrality} szerint.}
+                  %\caption{A szavak eloszlása \emph{closeness centrality} szerint.}
             \end{center}
                 \label{fig:closeness}
           \end{figure}
@@ -189,7 +181,7 @@
           \begin{figure}[h]
             \begin{center}
               \includegraphics[width=\columnwidth]{conj-verb-auth.png}
-                  \caption{A HITS algoritmus eredménye.
+                  \caption{%A HITS algoritmus eredménye.
                   A nagyobb piros ponttal jelölt kötőszavak balra fent
                   (magasabb authority),
                   a nagyobb zöld ponttal jelölt igék jobbra lent
@@ -199,6 +191,9 @@
             \end{center}
                 \label{fig:hits-auth}
           \end{figure}
+            \begin{center}
+            \url{https://github.com/makrai/textBetweenness}
+            \end{center}
         \end{block}
       \end{column}
 
