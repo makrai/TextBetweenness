@@ -1,16 +1,9 @@
-% koncepció: (a closeness cent és?) a HITS eredmény, a többi csak ötlet, szemléltetés
-% the poster is organized as follows
-% ötlet
-% skálafüggetlen
-% kisvilág
-%   távolságok
-%   klaszterek irányítottra való általánosítása problémás
-% központiság
-%   eye-candy: https://en.wikipedia.org/wiki/Centrality
-%   bness extrém esetei
-%   közelségi központiság
-% clustering
-% HITS
+% TODO L, clust, cent,...-re (bővebb listát lásd az explor...ipynb): 
+%   irányított más-e, súlyozott más-e, 
+%   mekkorára tudom kiszámolni
+% koncepció: mindn csak ötlet és illusztráció, minimális pilot redmény (a
+% closeness cent és a HITS) 
+
 \documentclass{beamer}
 \usepackage[size=a0,debug]{beamerposter}
 
@@ -27,7 +20,7 @@
 \usepackage[round]{natbib}
 %\usepackage{tikz}
 \usepackage{url}
-\usepackage[magyar]{babel}
+%\usepackage[magyar]{babel} TODO
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define the column width and poster size
@@ -107,15 +100,15 @@
           \item most: irányított gráf súlyozott élekkel bigramgyakorliságokból
         \end{itemize}
 
-          \begin{figure}[ht]
-            \begin{center}
-              \includegraphics[width=.6\columnwidth]{scfr_pelda.pdf}
-            \end{center}
+        \begin{figure}[ht]
+          \begin{center}
+            \includegraphics[width=.6\columnwidth]{scfr_pelda.pdf}
+          \end{center}
             \caption{,,A nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál.''
             példamondat ábrázolása.
             A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
             \label{fig:scfr_pelda}
-          \end{figure}
+        \end{figure}
       \end{block}
 
       %\smallskip
@@ -133,52 +126,69 @@
             \citep{willinger2009mathematics}
         \end{itemize}
       \end{block}
+      \begin{table}
+      \begin{tabular}{rrr}
+        \toprule
+        mondat & szókincs & bigram & $L$ & tranz \\
+        \midrule
+        1	& 13	& 13 & 2.77 & 0.02086 & 0.007463 \\
+        10	& 125	& 165 & 7.01 & 0.008146 & 0.004343 \\
+        100	& 880	& 1 343 & 6.00 & 0.004051 & 0.00263 \\
+        1 k	& 6 828	& 12 952 & 4.89 & 0.004051 & 0.00263 \\
+        10 k	& 42 992	& 111 141 & 0.002058 & 0.001713 \\
+        100 k	& 225 481	& 865 512 \\
+        1 m	& 1 043 583	& 6  082   994 \\
+        10 m	& 4 444 502	& 38  167   116 \\
+        47 m & 11 245  533 & 119 857  666 \\
+        \bottomrule
+      \end{tabular}
+      \end{table}
 
-      \begin{block}{Skálafüggetlenség}\end{block}
-      \begin{alertblock}{Irányított kisvilág}  
-        legrövidebb irányított utak, 
-        irányított klaszterek együttható \citep{fagiolo2007clustering}
-      \end{alertblock} %TODO
-        \begin{block}{Kis viág 1.: legrövidebb (irányított) utak} \end{block}
-      \begin{block}{Kis viág 2.: irányított klaszterezési együttható}
-        \begin{figure}
-          \includegraphics[width=7.5cm]{triangle-directions}
-        \end{figure}
-      \end{block}
+      %\begin{block}{Skálafüggetlenség}\end{block}
+        \begin{alertblock}{Irányított kisvilág}  
+          legrövidebb irányított utak, 
+          irányított klaszterek együttható \citep{fagiolo2007clustering}
+        \end{alertblock} %TODO
+        \begin{block}{Kisviág 1.: legrövidebb (irányított) utak} \end{block}
+          \begin{block}{Kisviág 2.: irányított klaszterezési együttható}
+            \begin{figure}
+              \includegraphics[width=7.5cm]{triangle-directions}
+            \end{figure}
+          \end{block}
     \end{column}
 
     \begin{column}{\sepwid} \end{column}			% empty spacer column
 
 
-    \begin{column}{\twocolwid} % középső oszlop
-      \begin{columns}
-        \begin{column}{.5\columnwidth}
-          \begin{block}{Data}
-            \begin{itemize}
-              \item
-            MNSZ2 \citep{oravecz2014hungarian}
-            \end{itemize}
-          \end{block}
-        \end{column}
-        \begin{column}{.5\columnwidth}
-          \url{https://github.com/makrai/textBetweenness/issues}
-        \end{column}
-      \end{columns}
-      \begin{block}{Közelségi központiság \emph{(closeness centrality)}}
-        irányított
-        \begin{figure}[h]
-          \begin{center}
-            \includegraphics[width=\columnwidth]{current-flow-closeness.png}
+      \begin{column}{\twocolwid} % középső oszlop
+        \begin{columns}
+          \begin{column}{.5\columnwidth}
+            \begin{block}{Data}
+              \begin{itemize}
+                \item
+                  MNSZ2 \citep{oravecz2014hungarian}
+              \end{itemize}
+            \end{block}
+          \end{column}
+          \begin{column}{.5\columnwidth}
+            \url{https://github.com/makrai/textBetweenness}
+          \end{column}
+        \end{columns}
+        \begin{block}{Közelségi központiság \emph{(closeness centrality)}}
+          irányított
+          \begin{figure}[h]
+            \begin{center}
+              \includegraphics[width=\columnwidth]{current-flow-closeness.png}
                   \caption{A szavak eloszlása \emph{closeness centrality} szerint.}
-          \end{center}
+            \end{center}
                 \label{fig:closeness}
-        \end{figure}
-      \end{block}
+          \end{figure}
+        \end{block}
 
-      \begin{block}{HITS}
-        \begin{figure}[h]
-          \begin{center}
-            \includegraphics[width=\columnwidth]{conj-verb-auth.png}
+        \begin{block}{HITS}
+          \begin{figure}[h]
+            \begin{center}
+              \includegraphics[width=\columnwidth]{conj-verb-auth.png}
                   \caption{A HITS algoritmus eredménye.
                   A nagyobb piros ponttal jelölt kötőszavak balra fent
                   (magasabb authority),
@@ -186,48 +196,48 @@
                   (alacsonyabb authority)
                   helyezkednek el
                   a fokszám (gyakoriság) vs authority grafikonon.}
-          \end{center}
+            \end{center}
                 \label{fig:hits-auth}
-        \end{figure}
-      \end{block}
-    \end{column}
+          \end{figure}
+        \end{block}
+      \end{column}
 
     \begin{column}{\sepwid} \end{column}			% empty spacer column
 
-    \begin{column}{\onecolwid} % jobb oszlop
-      \begin{block}{Központiság}
-        \begin{figure}
-        \includegraphics{6_centrality_measures}
+      \begin{column}{\onecolwid} % jobb oszlop
+        \begin{block}{Központiság}
+          \begin{figure}
+            \includegraphics{6_centrality_measures}
+            \begin{itemize}
+              \item[A] köztiség (betweenness),
+              \item[B] közelség (closeness),
+              \item[C] sajátvektor-,
+              \item[D] fok,
+              \item[E] harmonikus,
+              \item[F] Katz
+            \end{itemize}
+          \end{figure}
+        \end{block}
+
+
+        \begin{block}{További kutatás}
           \begin{itemize}
-\item[A] köztiség (betweenness),
-\item[B] közelség (closeness),
-\item[C] sajátvektor-,
-\item[D] fok,
-\item[E] harmonikus,
-\item[F] Katz
+            \item az élsúlyok alkalmas skálázása
+            \item kéne egy olyan szoftvercsomag, ami hatékonyan kezel
+              irányított gráfokat
+            \item klikkek szófajok szerint?
+            \item szemantika
           \end{itemize}
-        \end{figure}
-      \end{block}
+        \end{block}
 
-
-      \begin{block}{További kutatás}
-        \begin{itemize}
-          \item az élsúlyok alkalmas skálázása
-          \item kéne egy olyan szoftvercsomag, ami hatékonyan kezel
-            irányított gráfokat
-          \item klikkek szófajok szerint?
-          \item szemantika
-        \end{itemize}
-      \end{block}
-
-      \begin{block}{Hivatkozások}
-        \small
-            %\footnotesize
-        \bibliographystyle{abbrvnat}
+        \begin{block}{Hivatkozások}
+          \small
+          %\footnotesize
+          \bibliographystyle{abbrvnat}
           \bibliography{minden}
-      \end{block}
+        \end{block}
 
-    \end{column}
+      \end{column}
   \end{columns}
 \end{frame}
 \end{document}
