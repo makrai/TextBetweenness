@@ -87,7 +87,7 @@
     \node [shift={(-10 cm,-4cm)}]
     at (current page.north east)
     {\includegraphics[height=5cm]{img/logo_only_tr}};
-     % img//home/makrai/repo/paper/Common/Logo/nytud/.png}};
+    % img//home/makrai/repo/paper/Common/Logo/nytud/.png}};
   \end{tikzpicture}
 }
 
@@ -103,7 +103,7 @@
 
         \begin{block}{Hatványeloszlás, szavak, élek}
           \begin{itemize}
-            \item szógyakoriságok \cite{Zipf:1935}
+            \item szógyakoriságok \citep{Zipf:1935}
             \item skálafüggetlen gráf \citep{barabasi1999emergence}
             \item most: irányított gráf súlyozott élekkel bigramgyakorliságokból
           \end{itemize}
@@ -174,9 +174,9 @@
                         hosszának maximuma
               \end{itemize}
               \begin{table}
-                \begin{tabular}{ccccccc}
+                \begin{tabular}{c|cccccc}
                   \toprule
-                      mondat & \multicolumn{2}{c}{sugár, $r$} &
+                      \# mondat & \multicolumn{2}{c}{sugár, $r$} &
                       \multicolumn{2}{c}{átmérő, $d$} &
                       center  & periféria \\   
                       & \multicolumn{2}{c}{$\min e_v$} & \multicolumn{2}{c}{$\max_v
@@ -192,23 +192,23 @@
             \end{block}
           \end{column} 
 
-    \begin{column}{\sepwid} \end{column}   % empty spacer column
+          \begin{column}{\sepwid} \end{column}   % empty spacer column
 
-          \begin{column}{\onecolwid}
-            \begin{block}{Kapcsolódó irodalom}
-              \begin{itemize}
-                \item TextRank \citep{mihalcea2004textrank}, kulcsszókinyerés
-                  \begin{quote}
-                    results [...] are worse than results obtained with undirected
+            \begin{column}{\onecolwid}
+              \begin{block}{Kapcsolódó irodalom}
+                \begin{itemize}
+                  \item TextRank \citep{mihalcea2004textrank}, kulcsszókinyerés
+                    \begin{quote}
+                      results [...] are worse than results obtained with undirected
                           graphs, which suggests that [...] there is no natural “direction”
-                  \end{quote}
-                \item szemantikus hálók \citep{steyvers2005large}
-                \item trigram \citep{cancho2001thesmall}
-                \item a skálafüggetlen-hipe kritikája
-                  \citep{willinger2009mathematics}
-              \end{itemize}
-            \end{block}
-          \end{column}
+                    \end{quote}
+                  \item trigram \citep{cancho2001thesmall}
+                  \item szemantikus hálók \citep{steyvers2005large}
+                  \item a skálafüggetlen-hipe kritikája
+                    \citep{willinger2009mathematics}
+                \end{itemize}
+              \end{block}
+            \end{column}
         \end{columns}
 
 
@@ -216,7 +216,8 @@
         % Közép közép
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 
-                \bigskip
+                \newcommand{\hugeskip}{\vspace{2cm}}
+                \hugeskip
 
                   \begin{block}%{Kísérletek}
                     {Közelségi központiság (\emph{closeness centrality}),
@@ -227,7 +228,7 @@
                         A szavak egységes eloszlásban helyezkednek el.
                       Az eloszlásból néhány olyan elem lóg ki, amely
                       ,,nem illeszkedik a magyar szövegbe'':
-                      ilyen az egyenlőségjel és egy HTML entity ({\tt \&verbar;}),
+                      ilyen az egyenlőségjel és egy HTML entitás ({\tt \&verbar;}),
                       illetve két angol szó (a \liex{the} és az \liex{of}),
                       melyek előfordulnak a korpuszban.
                       %
@@ -241,64 +242,64 @@
 
                       \label{fig:closeness}
                     \end{figure}
-                    \end{block}
+                  \end{block}
 
-        \bigskip
+        \hugeskip
 
         \begin{block}{HITS, hyperlinkindukált témakeresés
           \emph{(Hyperlink-Induced Topic Search)}}
           \begin{columns}
             \begin{column}{\onecolwid}
               \resizebox{\columnwidth}{!}{
-              \begin{tabular}{lll}
-                \toprule
-                & pl. & miért fontos \\
-                \midrule
-                hub & \href{https://index.hu/}{index.hu},
-                \href{https://vajdasag.lap.hu/}{vajdasag.lap.hu} & linkek \\
-                tekintély \emph{(authority)} &
-                \url{http://www.nytud.hu/oszt/korpusz/} & tartalom \\
-                \bottomrule
-              \end{tabular}
-            }
-          \begin{columns}
-            \begin{column}{.5\columnwidth}
-              \begin{itemize}
-                \item kölcsönös definíció
-                  % jó hub egy olyan oldal, amely sok tekintélyes oldalra
-                  % mutat, nagy tekintélyük pedig azoknak az oldalaknak van
-                  % ebben a modellben, melyekre számos jó hub mutat.
-                \item számítása iteríatíve 
+                \begin{tabular}{lll}
+                  \toprule
+                  & pl. & miért fontos \\
+                  \midrule
+                  hub & \href{https://index.hu/}{index.hu},
+                  \href{https://vajdasag.lap.hu/}{vajdasag.lap.hu} & linkek \\
+                  tekintély \emph{(authority)} &
+                  \url{http://www.nytud.hu/oszt/korpusz/} & tartalom \\
+                  \bottomrule
+                \end{tabular}
+              }
+              \begin{columns}
+                \begin{column}{.5\columnwidth}
                   \begin{itemize}
-                    \item tetszőleges inicializáció
-                    \item  majd minden iterációban $\rightarrow$
-                  \end{itemize} \end{itemize} 
-              \end{column}
-            \begin{column}{.5\columnwidth}
-                      \begin{align*}
-                        h(v_1) &= \sum \{ a(v_2)\mid \langle v_1,v_2\rangle \in E \} \\
+                    \item kölcsönös definíció
+                      % jó hub egy olyan oldal, amely sok tekintélyes oldalra
+                      % mutat, nagy tekintélyük pedig azoknak az oldalaknak van
+                      % ebben a modellben, melyekre számos jó hub mutat.
+                    \item számítása iteríatíve 
+                      \begin{itemize}
+                        \item tetszőleges inicializáció
+                        \item  majd minden iterációban $\rightarrow$
+                      \end{itemize} \end{itemize} 
+                  \end{column}
+                  \begin{column}{.5\columnwidth}
+                    \begin{align*}
+                      h(v_1) &= \sum \{ a(v_2)\mid \langle v_1,v_2\rangle \in E \} \\
                         u(v_2) &= \sum \{ a(v_1)\mid \langle v_1,v_2\rangle \in E \} \\
                         u\quad &{\text{\texttt{/=}}} \sum_v u(v)^2 \\
                         a\quad &{\text{\texttt{/=}}} \sum_v a(v)^2
-                      \end{align*}
-            \end{column}
-            \end{columns}
-            \end{column}
+                    \end{align*}
+                  \end{column}
+                \end{columns}
+              \end{column}
 
-            \begin{column}{\onecolwid} 
-              \begin{figure}[h]
-                \includegraphics[width=\columnwidth]{img/conj-verb-auth.png}
+              \begin{column}{\onecolwid} 
+                \begin{figure}[h]
+                  \includegraphics[width=\columnwidth]{img/conj-verb-auth.png}
                     \caption{%A HITS algoritmus eredménye.
                       A nagyobb, piros ponttal jelölt kötőszavak balra fent (magasabb
                     authority), a nagyobb, zöld ponttal jelölt igék jobbra lent (alacsonyabb
                     authority) helyezkednek el a fokszám (gyakoriság) vs authority
                     grafikonon.} 
-              \end{figure}
-            \end{column}
-            
-    \begin{column}{\sepwid} \end{column}   % empty spacer column
+                \end{figure}
+              \end{column}
 
-          \end{columns} 
+              \begin{column}{\sepwid} \end{column}   % empty spacer column
+
+            \end{columns} 
               \begin{figure}
                 \includegraphics[width=.7\columnwidth]{img/auth_poster}
                 \caption{Tekintély szófajok szerint: 
@@ -306,15 +307,15 @@
                 \textcolor{green}{igék},
                 \textcolor{magenta}{határozók},
                 \textcolor{cyan}{melléknevek}, és
-            \textcolor{darkgoldenrod}{számnevek}.
-            10 K mondat, csak a $>10^{-8}$ tekintélyű szavakat ábrázoltuk.
+                \textcolor{darkgoldenrod}{számnevek}.
+                10 K mondat, csak a $>10^{-8}$ tekintélyű szavakat ábrázoltuk.
 
-            }
+                }
                   \label{fig:hits-auth} 
-          \end{figure}
-        \end{block}
+              \end{figure}
+          \end{block}
 
-        %%%%%%%%%%%%%%%%%
+          %%%%%%%%%%%%%%%%%
       \begin{columns} % alsó blokkok
         %%%%%%%%%%%%%%%%%
         \begin{column}{\onecolwid}
@@ -346,13 +347,23 @@
 
         \bigskip
 
+        \begin{block}{Adat, eszköz, kód}
+          \begin{itemize}
+            \item MNSZ 2 \citep{oravecz2014hungarian}
+            \item \href{https://networkx.github.io/}{networkx}
+              \citep{hagberg08exploring}
+            \item \url{https://github.com/makrai/textBetweenness/}
+          \end{itemize}
+        \end{block}
+
+        \bigskip
+
         \begin{block}{További kutatás}
           \begin{itemize}
             \item klaszterek szófajok szerint?
             \item az élsúlyok skálázása távolságként
             \item irányított gráfok hatékony implementációja
             \item szemantika
-              %\item még
               %\item még
               %\item még
           \end{itemize}
