@@ -1,20 +1,13 @@
-% koncepció: (a closeness cent és?) a HITS eredmény, a többi csak ötlet, szemléltetés
-% the poster is organized as follows
-% ötlet
-% skálafüggetlen
-% kisvilág
-%   távolságok
-%   klaszterek irányítittra való általánosítása problémás
-% központiság
-%   eye-candy: https://en.wikipedia.org/wiki/Centrality
-%   bness extrém esetei
-%   közelségi központiság
-% clustering
-% HITS
+% TODO L, clust, cent,...-re (bővebb listát lásd az explor...ipynb): 
+%   irányított más-e, súlyozott más-e, 
+%   mekkorára tudom kiszámolni
+% koncepció: mindn csak ötlet és illusztráció, minimális pilot redmény (a
+% closeness cent és a HITS) 
+
 \documentclass{beamer}
 \usepackage[size=a0,debug]{beamerposter}
 
-\usepackage{graphicx}			% allows us to import images
+\usepackage{graphicx}   % allows us to import images
 \usepackage{booktabs}
 %\usepackage{amsmath}
 %\usepackage{multirow}
@@ -27,7 +20,7 @@
 \usepackage[round]{natbib}
 %\usepackage{tikz}
 \usepackage{url}
-\usepackage[magyar]{babel}
+\usepackage[magyar]{babel} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Define the column width and poster size
@@ -50,6 +43,8 @@
 %\usetheme{confposter}
 %\usepackage{exscale} % scaling of the math extension font cmex
 
+\newcommand{\liex}[1]{\emph{#1}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % The next part fixes a problem with figure numbering. Thanks Nishan!
 % When including a figure in your poster, be sure that the commands are typed in the following order:
@@ -60,10 +55,9 @@
 % That is, put the \caption after the \includegraphics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usecaptiontemplate{
-  \small
-  \structure{\insertcaptionname~\insertcaptionnumber:}
-\insertcaption}
+\usecaptiontemplate{ 
+\small
+\structure{\insertcaptionnumber.~\insertcaptionname} \insertcaption}
 
 % Define colours (see beamerthemeconfposter.sty to change these colour
 % definitions) TODO
@@ -77,6 +71,9 @@
 \setbeamercolor{item}{fg=dgreen}
 \setbeamercolor{item projected}{bg=dgreen}
 
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{darkgoldenrod}{rgb}{0.72, 0.53, 0.04}
+
 \author{Makrai Márton és Sass Bálint}
 \title{A szöveg mint skálafüggetlen hálózat}
 \institute{MTA Nyelvtudományi Intézet\break
@@ -89,7 +86,8 @@
   \begin{tikzpicture}[remember picture,overlay]
     \node [shift={(-10 cm,-4cm)}]
     at (current page.north east)
-    {\includegraphics[height=5cm]{/home/makrai/repo/paper/Common/Logo/nytud/logo_only_tr.png}};
+    {\includegraphics[height=5cm]{img/logo_only_tr}};
+     % img//home/makrai/repo/paper/Common/Logo/nytud/.png}};
   \end{tikzpicture}
 }
 
@@ -97,138 +95,279 @@
   \begin{columns}[t]% the [t] option aligns the column's content at the top
     % TODO Data, repo
 
-    \begin{column}{\sepwid}\end{column}			% empty spacer column
+    \begin{column}{\sepwid} \end{column}   % empty spacer column
 
-    \begin{column}{\onecolwid} % bal oszlop
-      \begin{block}{Hatványeloszlás, szavak, élek}
-        \begin{itemize}
-          \item szógyakoriságok \cite{Zipf:1935}
-          \item skálafüggetlen gráf \citep{barabasi1999emergence}
-          \item most: irányítitt gráf súlyozott élekkel bigramgyakorliságokból
-        \end{itemize}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \begin{column}{\onecolwid} % bal oszlop
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \begin{block}{Hatványeloszlás, szavak, élek}
+          \begin{itemize}
+            \item szógyakoriságok \cite{Zipf:1935}
+            \item skálafüggetlen gráf \citep{barabasi1999emergence}
+            \item most: irányított gráf súlyozott élekkel bigramgyakorliságokból
+          \end{itemize}
 
           \begin{figure}[ht]
-            \begin{center}
-              \includegraphics[width=.6\columnwidth]{scfr_pelda.pdf}
-            \end{center}
-            \caption{,,A nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál.''
-            példamondat ábrázolása.
-            A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
-            \label{fig:scfr_pelda}
+            \includegraphics[width=.6\columnwidth]{img/nagyobb_nagyobb.pdf}
+              \caption{,,A nagyobb nagyobb a nagynál vagy a nagy nagyobb a nagyobbnál.''
+              példamondat ábrázolása.
+              A dupla nyilat ábrázolhatjuk egy 2-es súllyal bíró szimpla nyíllal is.}
+              \label{fig:scfr_pelda}
+              \includegraphics[width=\columnwidth]{img/nedge_vs_nnode}
           \end{figure}
-      \end{block}
+        \end{block}
 
-      %\smallskip
+        %\smallskip
 
-      \begin{block}{Kapcsolódó irodalom}
-        \begin{itemize}
-          \item TextRank \citep{mihalcea2004textrank}, kulcsszókinyerés
-            \begin{quote}
-              results [...] are worse than results obtained with undirected
-                graphs, which suggests that [...] there is no natural “direction”
-            \end{quote}
-          \item szemantikus hálók \citep{steyvers2005large}
-          \item trigram \citep{cancho2001thesmall}
-          \item a skálafüggetlen-hipe kritikája
-            \citep{willinger2009mathematics}
-        \end{itemize}
-      \end{block}
+        \bigskip
 
-      \begin{block}{Skálafüggetlenség}\end{block}
-      \begin{alertblock}{Irányított kisvilág}  
-        legrövidebb irányított utak, 
-        irányított klaszterek együttható \citep{fagiolo2007clustering}
-      \end{alertblock} %TODO
-        \begin{block}{Kis viág 1.: legrövidebb (irányított) utak} \end{block}
-      \begin{block}{Kis viág 2.: irányított klaszterezési együttható}
-        \begin{figure}
-          \includegraphics[width=7.5cm]{triangle-directions}
-        \end{figure}
-      \end{block}
-    \end{column}
+        \begin{block}{Irányított kisvilág globálisan és\dots}%, tranzitivitás} 
+          \begin{figure} 
+            \includegraphics[width=\columnwidth]{img/avg-shortest-path-length}
 
-    \begin{column}{\sepwid} \end{column}			% empty spacer column
+            % \begin{tabular}{rrrrrrr}
+            % %TODO L, tranz: kell irányítatlan?
+            % \toprule
+            % mondat & szókincs & bigram & \multicolumn{2}{c}{$L$} & \multicolumn{2}{c}{tranzitivitás} \\
+            % &&&$\rightarrow$&--&$\rightarrow$&--\\
+            % \midrule
+            % 10	& 125	& 165	& 7.02	& 4.19	& 0.007463	& 0.02086 \\
+            % 100	& 880	& 1343	& 6.00	& 3.97	& 0.004343	& 0.008146 \\
+            % 1k  &6828	& 12952	& 4.89	& 3.50	& 0.00263	& 0.004051 \\
+            % 10k & 42992	& 111141	& 4.11	& 0.001713 \\
+            % 100k	& 225481	& 865512 \\
+            % 1m	& 1043583	& 6082 \\
+            % 10m	& 4444502	& 38167 \\
+            % 47m	& 11245533	& 119857 \\
+            % \bottomrule
+            % \end{tabular}
+          \end{figure}
+        \end{block}
+
+        \bigskip
+
+        \begin{block}{\dots lokálisan}
+          \begin{figure}
+            \includegraphics[width=7.5cm]{img/triangle-directions_1}
+                \includegraphics[width=7.5cm]{img/triangle-directions_2} 
+                \caption{Irányított klaszterezési együttható \citep{fagiolo2007clustering}}
+
+              \includegraphics[width=\columnwidth]{img/trans}
+          \end{figure}
+        \end{block}
+      \end{column}
+
+    \begin{column}{\sepwid} \end{column}   % empty spacer column
+
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \begin{column}{\twocolwid} % középső oszlop
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \begin{columns} % fölső blokkok
+          \begin{column}{\onecolwid}
+
+            \begin{block}{Különcség (\emph{eccentricity})}
+              \begin{itemize}
+                \item egy $v$ csúcs $e_v$ \emph{különcsége} 
+                  a $v$-ból az összes többi csúcsba vezető legrövidebb utak
+                        hosszának maximuma
+              \end{itemize}
+              \begin{table}
+                \begin{tabular}{ccccccc}
+                  \toprule
+                      mondat & \multicolumn{2}{c}{sugár, $r$} &
+                      \multicolumn{2}{c}{átmérő, $d$} &
+                      center  & periféria \\   
+                      & \multicolumn{2}{c}{$\min e_v$} & \multicolumn{2}{c}{$\max_v
+                      e_v$} & $\{v\mid e_v=r\}$ & $\{v\mid e_v=d\}$\\ 
+                      & $\rightarrow$ & -- & $\rightarrow$ & -- \\
+                      \midrule
+                      100 & 11 & 7 & 23 & 13 & \{\texttt ., \texttt !, \texttt ?\} &
+                      \{nádcukorból\}\\
+                      1k  &  9 &   & 19 &    & \{\texttt ,\} & \{Megadható, two\}\\
+                      \bottomrule 
+                \end{tabular}
+              \end{table} 
+            \end{block}
+          \end{column} 
+
+    \begin{column}{\sepwid} \end{column}   % empty spacer column
+
+          \begin{column}{\onecolwid}
+            \begin{block}{Kapcsolódó irodalom}
+              \begin{itemize}
+                \item TextRank \citep{mihalcea2004textrank}, kulcsszókinyerés
+                  \begin{quote}
+                    results [...] are worse than results obtained with undirected
+                          graphs, which suggests that [...] there is no natural “direction”
+                  \end{quote}
+                \item szemantikus hálók \citep{steyvers2005large}
+                \item trigram \citep{cancho2001thesmall}
+                \item a skálafüggetlen-hipe kritikája
+                  \citep{willinger2009mathematics}
+              \end{itemize}
+            \end{block}
+          \end{column}
+        \end{columns}
 
 
-    \begin{column}{\twocolwid} % középső oszlop
-      \begin{columns}
-        \begin{column}{.5\columnwidth}
-          \begin{block}{Data}
-            \begin{itemize}
-              \item
-            MNSZ2 \citep{oravecz2014hungarian}
-            \end{itemize}
-          \end{block}
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        % Közép közép
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+                \bigskip
+
+                  \begin{block}%{Kísérletek}
+                    {Közelségi központiság (\emph{closeness centrality}),
+                    irányítatlan} 
+                    \begin{figure}[h]
+                      \includegraphics[width=.7\columnwidth]{img/current-flow-closeness.png}
+                      \caption{%A szavak eloszlása \emph{closeness centrality} szerint.}
+                        A szavak egységes eloszlásban helyezkednek el.
+                      Az eloszlásból néhány olyan elem lóg ki, amely
+                      ,,nem illeszkedik a magyar szövegbe'':
+                      ilyen az egyenlőségjel és egy HTML entity ({\tt \&verbar;}),
+                      illetve két angol szó (a \liex{the} és az \liex{of}),
+                      melyek előfordulnak a korpuszban.
+                      %
+                      % Ez egy fokszám vs closeness_centrality grafikon, ugye?
+                      Ezeknek a tokeneknek tehát kisebb
+                      a közelségi központiság értékük annál,
+                      mint amit gyakoriságuk alapján várnánk.
+                      %
+                      A kilógó elemek pontos karakterizálásához további vizsgálat szükséges.
+                      }
+
+                      \label{fig:closeness}
+                    \end{figure}
+                    \end{block}
+
+        \bigskip
+
+        \begin{block}{HITS, hyperlinkindukált témakeresés
+          \emph{(Hyperlink-Induced Topic Search)}}
+          \begin{columns}
+            \begin{column}{\onecolwid}
+              \resizebox{\columnwidth}{!}{
+              \begin{tabular}{lll}
+                \toprule
+                & pl. & miért fontos \\
+                \midrule
+                hub & \href{https://index.hu/}{index.hu},
+                \href{https://vajdasag.lap.hu/}{vajdasag.lap.hu} & linkek \\
+                tekintély \emph{(authority)} &
+                \url{http://www.nytud.hu/oszt/korpusz/} & tartalom \\
+                \bottomrule
+              \end{tabular}
+            }
+          \begin{columns}
+            \begin{column}{.5\columnwidth}
+              \begin{itemize}
+                \item kölcsönös definíció
+                  % jó hub egy olyan oldal, amely sok tekintélyes oldalra
+                  % mutat, nagy tekintélyük pedig azoknak az oldalaknak van
+                  % ebben a modellben, melyekre számos jó hub mutat.
+                \item számítása iteríatíve 
+                  \begin{itemize}
+                    \item tetszőleges inicializáció
+                    \item  majd minden iterációban $\rightarrow$
+                  \end{itemize} \end{itemize} 
+              \end{column}
+            \begin{column}{.5\columnwidth}
+                      \begin{align*}
+                        h(v_1) &= \sum \{ a(v_2)\mid \langle v_1,v_2\rangle \in E \} \\
+                        u(v_2) &= \sum \{ a(v_1)\mid \langle v_1,v_2\rangle \in E \} \\
+                        u\quad &{\text{\texttt{/=}}} \sum_v u(v)^2 \\
+                        a\quad &{\text{\texttt{/=}}} \sum_v a(v)^2
+                      \end{align*}
+            \end{column}
+            \end{columns}
+            \end{column}
+
+            \begin{column}{\onecolwid} 
+              \begin{figure}[h]
+                \includegraphics[width=\columnwidth]{img/conj-verb-auth.png}
+                    \caption{%A HITS algoritmus eredménye.
+                      A nagyobb, piros ponttal jelölt kötőszavak balra fent (magasabb
+                    authority), a nagyobb, zöld ponttal jelölt igék jobbra lent (alacsonyabb
+                    authority) helyezkednek el a fokszám (gyakoriság) vs authority
+                    grafikonon.} 
+              \end{figure}
+            \end{column}
+            
+    \begin{column}{\sepwid} \end{column}   % empty spacer column
+
+          \end{columns} 
+              \begin{figure}
+                \includegraphics[width=.7\columnwidth]{img/auth_poster}
+                \caption{Tekintély szófajok szerint: 
+                \textcolor{red}{kötőszók},
+                \textcolor{green}{igék},
+                \textcolor{magenta}{határozók},
+                \textcolor{cyan}{melléknevek}, és
+            \textcolor{darkgoldenrod}{számnevek}.
+            10 K mondat, csak a $>10^{-8}$ tekintélyű szavakat ábrázoltuk.
+
+            }
+                  \label{fig:hits-auth} 
+          \end{figure}
+        \end{block}
+
+        %%%%%%%%%%%%%%%%%
+      \begin{columns} % alsó blokkok
+        %%%%%%%%%%%%%%%%%
+        \begin{column}{\onecolwid}
+          \bigskip
+
         \end{column}
-        \begin{column}{.5\columnwidth}
-          \url{https://github.com/makrai/textBetweenness/issues}
-        \end{column}
+        %\begin{column}{\onecolwid} \end{column}
       \end{columns}
-      \begin{block}{Közelségi központiság \emph{(closeness centrality)}}
-        irányított
-        \begin{figure}[h]
-          \begin{center}
-            \includegraphics[width=\columnwidth]{current-flow-closeness.png}
-                  \caption{A szavak eloszlása \emph{closeness centrality} szerint.}
-          \end{center}
-                \label{fig:closeness}
-        \end{figure}
-      \end{block}
 
-      \begin{block}{HITS}
-        \begin{figure}[h]
-          \begin{center}
-            \includegraphics[width=\columnwidth]{conj-verb-auth.png}
-                  \caption{A HITS algoritmus eredménye.
-                  A nagyobb piros ponttal jelölt kötőszavak balra fent
-                  (magasabb authority),
-                  a nagyobb zöld ponttal jelölt igék jobbra lent
-                  (alacsonyabb authority)
-                  helyezkednek el
-                  a fokszám (gyakoriság) vs authority grafikonon.}
-          \end{center}
-                \label{fig:hits-auth}
-        \end{figure}
-      \end{block}
     \end{column}
 
-    \begin{column}{\sepwid} \end{column}			% empty spacer column
+    \begin{column}{\sepwid} \end{column}   % empty spacer column
 
-    \begin{column}{\onecolwid} % jobb oszlop
-      \begin{block}{Központigság}
-        \begin{figure}
-        \includegraphics{6_centrality_measures}
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \begin{column}{\onecolwid} % jobb oszlop
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \begin{block}{Központiság}
+          \begin{figure}
+            \includegraphics{img/6_centrality_measures}
+
+              \begin{tabular}{ll}
+                \alert{A} köztiség (betweenness)	& \alert{B} közelség (closeness) \\
+                \alert{C} sajátvektor-	& \alert{D} fok (itt gyakoriság)\\
+                \alert{E} harmonikus	& \alert{F} Katz \\
+              \end{tabular}
+          \end{figure}
+        \end{block}
+
+        \bigskip
+
+        \begin{block}{További kutatás}
           \begin{itemize}
-\item[A] köztiség (betweenness),
-\item[B] közelség (closeness),
-\item[C] sajátvektor-,
-\item[D] fok,
-\item[E] harmonikus,
-\item[F] Katz
+            \item klaszterek szófajok szerint?
+            \item az élsúlyok skálázása távolságként
+            \item irányított gráfok hatékony implementációja
+            \item szemantika
+              %\item még
+              %\item még
+              %\item még
           \end{itemize}
-        \end{figure}
-      \end{block}
+        \end{block}
 
+        \bigskip
 
-      \begin{block}{További kutatás}
-        \begin{itemize}
-          \item az élsúlyok alkalmas skálázása
-          \item kéne egy olyan szoftvercsomag, ami hatékonyan kezel
-            irányított gráfokat
-          \item klikkek szófajok szerint?
-          \item szemantika
-        \end{itemize}
-      \end{block}
+        \begin{block}{Hivatkozások}
+          \small
+          %\footnotesize
+            \bibliographystyle{abbrvnat}
+            \bibliography{minden}
+        \end{block}
 
-      \begin{block}{Hivatkozások}
-        \small
-            %\footnotesize
-        \bibliographystyle{abbrvnat}
-          \bibliography{minden}
-      \end{block}
-
-    \end{column}
+      \end{column} 
   \end{columns}
 \end{frame}
 \end{document}
-
